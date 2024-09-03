@@ -18,6 +18,5 @@ namespace PersonalizedLibraryAPI.Models
         public ICollection<BookCategory> BookCategories { get; set; }
         public Review? Review { get; set; }
         public ReadingTracking ReadingTracking { get; set; }
-
     }
 }

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ydAMTVN+4PH4Vn92cjvuqMc+aokXbCgWyAAu5tqC9e4WcWHuWshLLAjFlgzpfHpCkhsONZRIcd/k6mKbixfqZg==",
+  "dgSpecHash": "ghy4k+b/fe0XtUNzFcZL+T1+jHNRDgw3htGLuV1KCCYFtHCwffZWSKY6Tac0SXPmBfoglDZhRyZCbpUVTwK7Wg==",
   "success": true,
   "projectFilePath": "C:\\Users\\hp\\PersonalizedLibrary\\personalizedlibraryapi\\PersonalizedLibraryAPI.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\hp\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
