@@ -14,6 +14,7 @@ namespace PersonalizedLibraryAPI.Helper
         {
             CreateMap<Book, BookDto>();
             CreateMap<Category, CategoryDto>();
+            CreateMap<Status, StatusDto>();
         }
     }
 }

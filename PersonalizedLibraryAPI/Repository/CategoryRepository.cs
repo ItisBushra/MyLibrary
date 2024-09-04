@@ -28,7 +28,7 @@ namespace PersonalizedLibraryAPI.Repository
 
         public ICollection<Category> GetCategories()
         {
-            return _dBContext.Categories.ToList();
+            return _dBContext.Categories.OrderBy(b=>b.Id).ToList();
         }
 
         public Category GetCategory(int id)
