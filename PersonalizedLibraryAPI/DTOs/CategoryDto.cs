@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace PersonalizedLibraryAPI.DTOs
 {
-    public class BookDto
+    public class CategoryDto
     {
         public int Id { get; set; }
-        public string Name{ get; set; }
-        public string WritersName { get; set; }
+        public string Name { get; set; }
     }
 }

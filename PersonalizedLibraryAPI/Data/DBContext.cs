@@ -23,20 +23,24 @@ namespace PersonalizedLibraryAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Many-to-Many 
             modelBuilder.Entity<BookCategory>().HasKey(bc=> new {bc.BookId, bc.CategoryId});
             modelBuilder.Entity<BookCategory>().HasOne(b=>b.Book).WithMany(bc=>bc.BookCategories).HasForeignKey(b=>b.BookId);
             modelBuilder.Entity<BookCategory>().HasOne(b=>b.Category).WithMany(bc=>bc.BookCategories).HasForeignKey(b=>b.CategoryId);
 
+            //One-to-One
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.ReadingTracking)
                 .WithOne(rt => rt.Book)
                 .HasForeignKey<ReadingTracking>(rt => rt.BookId);
-
+                
+            //One-to-One
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Review)
                 .WithOne(rt => rt.Book)
                 .HasForeignKey<Review>(rt => rt.BookId);
 
+            //One-to-Many
             modelBuilder.Entity<Book>()
                 .HasOne(b => b.Status)
                 .WithMany(s => s.Books)

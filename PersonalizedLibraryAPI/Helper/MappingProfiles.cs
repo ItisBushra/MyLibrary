@@ -13,6 +13,7 @@ namespace PersonalizedLibraryAPI.Helper
         public MappingProfiles()
         {
             CreateMap<Book, BookDto>();
+            CreateMap<Category, CategoryDto>();
         }
     }
 }
