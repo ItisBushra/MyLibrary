@@ -16,22 +16,18 @@ namespace PersonalizedLibraryAPI.Repository
         {
             _dBContext = dBContext;
         }
-
         public bool ReviewExists(int id)
         {
             return _dBContext.Reviews.Any(r=>r.Id == id);
         }
-
         public ICollection<Review> GetReviews() 
         {
             return _dBContext.Reviews.OrderBy(r=>r.Id).ToList();
         }
-
         public Review GetReview(int id)
         {
             return _dBContext.Reviews.Where(r=>r.Id == id).FirstOrDefault();
         }
-
         public Review GetReviewByBook(int bookId)
         {
             return _dBContext.Books.Where(b=>b.Id == bookId).Select(r=>r.Review).FirstOrDefault();
