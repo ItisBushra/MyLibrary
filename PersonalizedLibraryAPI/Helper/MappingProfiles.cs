@@ -15,7 +15,7 @@ namespace PersonalizedLibraryAPI.Helper
             CreateMap<Book, BookDto>();
             CreateMap<Category, CategoryDto>();
             CreateMap<Status, StatusDto>();
-            CreateMap<Review, ReviewDto>();
+            CreateMap<Review, ReviewDto>().ReverseMap();
             CreateMap<ReadingTracking, ReadingTrackingDto>();
         }
     }

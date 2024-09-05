@@ -18,12 +18,14 @@ namespace PersonalizedLibraryAPI.Controllers
     public class ReviewController : Controller
     {
         private readonly IReviewRepository _reviewRepository;
+        private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
 
-        public ReviewController(IReviewRepository reviewRepository, IMapper mapper)
+        public ReviewController(IReviewRepository reviewRepository, IMapper mapper, IBookRepository bookRepository)
         {
             _reviewRepository = reviewRepository;
             _mapper = mapper;
+            _bookRepository = bookRepository;
         }
 
         [HttpGet]
@@ -79,6 +81,42 @@ namespace PersonalizedLibraryAPI.Controllers
                return BadRequest();
 
             return Ok(review);
+        }
+        
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateReview([FromQuery] int bookId, [FromBody] ReviewDto reviewCreate)
+        {
+            //if user created null
+            if(reviewCreate == null || !ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            //create the review
+            var reviewMap = _mapper.Map<Review>(reviewCreate);
+
+            reviewMap.Book = _bookRepository.GetBook(bookId);
+
+            //checking if the book exsists
+            if(!_bookRepository.BookExists(bookId))
+            {
+                ModelState.AddModelError("", "Kitap mevcut değil");
+                return StatusCode(422, ModelState);
+            }
+            //checking if the book has a review
+            if(_reviewRepository.GetReviewByBook(bookId) != null)
+            {
+                ModelState.AddModelError("", "mevcut bir inceleme var");
+                return StatusCode(422, ModelState);
+            }
+
+            if(!_reviewRepository.CreateReview(reviewMap))
+            {
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("başarıyla oluşturuldu");
         }
 
     }

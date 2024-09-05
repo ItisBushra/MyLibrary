@@ -12,5 +12,7 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         Book GetBook(int id);
         Book GetBook(string name);
         bool BookExists(int id);
+        bool CreateBook(Book book);
+        bool Save();
     }
 }
