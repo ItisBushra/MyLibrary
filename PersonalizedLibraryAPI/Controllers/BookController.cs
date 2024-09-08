@@ -17,6 +17,7 @@ namespace PersonalizedLibraryAPI.Controllers
     public class BookController : Controller
     {
         private readonly IBookRepository _bookRepository;
+
         private readonly IMapper _mapper;
         public BookController(IBookRepository bookRepository, IMapper mapper)
         {
@@ -51,5 +52,38 @@ namespace PersonalizedLibraryAPI.Controllers
 
             return Ok(book);
         }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateBook([FromQuery] int statusId, [FromQuery] int catId, 
+                                        [FromBody] BookDto bookCreate, [FromQuery] ReadingTrackingDto?
+                                         readingTracking, [FromQuery] ReviewDto? review)
+        {
+            if (bookCreate == null|| !ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            //kitap yeni olduğunu knotrol etmek
+            var books = _bookRepository.GetBooks().Where(b=>b.Name == bookCreate.Name).FirstOrDefault();
+            if (books != null)
+            {
+                ModelState.AddModelError("", "kitap mevcut");
+                return StatusCode(422, ModelState);
+            }
+
+            var bookMap = _mapper.Map<Book>(bookCreate);
+            var readingTrackingMap = _mapper.Map<ReadingTracking>(readingTracking);
+            var reviewMap = _mapper.Map<Review>(review);
+
+            if (!_bookRepository.CreateBook(catId, statusId, bookMap,
+                         readingTrackingMap, reviewMap))
+            {
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+                return StatusCode(500, ModelState);
+            }
+
+            return Ok("başarıyla oluşturuldu");
+        }
+
     }
 }
