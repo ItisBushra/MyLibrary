@@ -88,34 +88,32 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateReview([FromQuery] int bookId, [FromBody] ReviewDto reviewCreate)
         {
-            //if user created null
+            //kullanıcı null olarak oluşturulmuşsa
             if(reviewCreate == null || !ModelState.IsValid) 
                 return BadRequest(ModelState);
 
-            //create the review
+            //review oluştur
             var reviewMap = _mapper.Map<Review>(reviewCreate);
-
             reviewMap.Book = _bookRepository.GetBook(bookId);
 
-            //checking if the book exsists
+            //kitabın var olup olmadığını kontrol etmek
             if(!_bookRepository.BookExists(bookId))
             {
                 ModelState.AddModelError("", "Kitap mevcut değil");
                 return StatusCode(422, ModelState);
             }
-            //checking if the book has a review
+            //kitabın bir incelemesi olup olmadığını kontrol etmek
             if(_reviewRepository.GetReviewByBook(bookId) != null)
             {
                 ModelState.AddModelError("", "mevcut bir inceleme var");
                 return StatusCode(422, ModelState);
             }
-
+            //inceleme işlem başarısızlığı yaratır
             if(!_reviewRepository.CreateReview(reviewMap))
             {
                 ModelState.AddModelError("", "bir şeyler ters gitti");
                 return StatusCode(500, ModelState);
             }
-
             return Ok("başarıyla oluşturuldu");
         }
 

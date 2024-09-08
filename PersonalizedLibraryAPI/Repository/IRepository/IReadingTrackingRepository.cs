@@ -12,6 +12,8 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         ReadingTracking GetReadingTracking(int id);
         ReadingTracking GetReadingTrackingByBook(int bookId);
         Book GetBookByReadingTracking(int readingTrackingId);
-        bool ReadingTrackingExists(int bookId);
+        bool ReadingTrackingExists(int readingTrackingId);
+        bool CreateReadingTracking(ReadingTracking readingTracking);
+        bool Save();
     }
 }

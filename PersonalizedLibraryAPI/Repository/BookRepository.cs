@@ -15,30 +15,25 @@ namespace PersonalizedLibraryAPI.Repository
         {
             _dBContext = dBContext;
         }
-
         public bool BookExists(int id)
         {
             return _dBContext.Books.Any(b=>b.Id == id);
         }
-
         public Book GetBook(int id)
         {
             return _dBContext.Books
                     .Where(b=>b.Id == id).FirstOrDefault();
         }
-
         public Book GetBook(string name)
         {
             return _dBContext.Books
                     .Where(b=>b.Name == name).FirstOrDefault();
         }
-
         public ICollection<Book> GetBooks()
         {
             return _dBContext.Books
                     .OrderBy(b=>b.Id).ToList();
         }
-
         public bool CreateBook(Book book)
         {
             _dBContext.Add(book);

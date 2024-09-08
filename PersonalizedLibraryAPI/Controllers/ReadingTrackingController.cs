@@ -17,10 +17,12 @@ namespace PersonalizedLibraryAPI.Controllers
     public class ReadingTrackingController : Controller
     {
         private readonly IReadingTrackingRepository _readingTrackingRepository;
+        private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
-        public ReadingTrackingController(IReadingTrackingRepository readingTrackingRepository, IMapper mapper)
+        public ReadingTrackingController(IReadingTrackingRepository readingTrackingRepository, IMapper mapper, IBookRepository bookRepository)
         {
             _readingTrackingRepository = readingTrackingRepository;
+            _bookRepository = bookRepository;
             _mapper = mapper;
         }
 
@@ -44,7 +46,8 @@ namespace PersonalizedLibraryAPI.Controllers
             if(!_readingTrackingRepository.ReadingTrackingExists(readingTrackingId))
                 return NotFound();
 
-            var readingTracking = _mapper.Map<ReadingTrackingDto>(_readingTrackingRepository.GetReadingTracking(readingTrackingId));
+            var readingTracking = _mapper.Map<ReadingTrackingDto>
+                                    (_readingTrackingRepository.GetReadingTracking(readingTrackingId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -77,6 +80,40 @@ namespace PersonalizedLibraryAPI.Controllers
                return BadRequest();
 
             return Ok(readingTracking);
+        }
+
+        [HttpPost]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        public IActionResult CreateReadingTracking([FromQuery] int bookId, [FromBody] ReadingTrackingDto readingTrackingCreate)
+        {
+            //kullanıcı null olarak oluşturulmuşsa
+            if(readingTrackingCreate == null || !ModelState.IsValid) 
+                return BadRequest(ModelState);
+
+            //readingTracking oluştur
+            var readingTrackingMap = _mapper.Map<ReadingTracking>(readingTrackingCreate);
+            readingTrackingMap.Book = _bookRepository.GetBook(bookId);
+
+            //kitabın var olup olmadığını kontrol etmek
+            if(!_bookRepository.BookExists(bookId))
+            {
+                ModelState.AddModelError("", "Kitap mevcut değil");
+                return StatusCode(422, ModelState);
+            }
+            //kitabın bir incelemesi olup olmadığını kontrol etmek
+            if(_readingTrackingRepository.GetReadingTrackingByBook(bookId) != null)
+            {
+                ModelState.AddModelError("", "mevcut bir inceleme var");
+                return StatusCode(422, ModelState);
+            }
+            //inceleme işlem başarısızlığı yaratır
+            if(!_readingTrackingRepository.CreateReadingTracking(readingTrackingMap))
+            {
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("başarıyla oluşturuldu");
         }
     }
 }

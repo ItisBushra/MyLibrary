@@ -39,6 +39,16 @@ namespace PersonalizedLibraryAPI.Repository
             return _dBContext.ReadingTrackings.Where(r=>r.Id == readingTrackingId)
                     .Select(b=>b.Book).FirstOrDefault();
         }
+        public bool CreateReadingTracking(ReadingTracking readingTracking)
+        {
+            _dBContext.Add(readingTracking);
+            return Save();
+        }
+        public bool Save()
+        {
+            var saved = _dBContext.SaveChanges();
+            return saved > 0 ? true: false;
+        }  
           
     }
 }
