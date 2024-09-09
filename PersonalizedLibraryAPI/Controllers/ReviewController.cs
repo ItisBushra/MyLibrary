@@ -147,37 +147,5 @@ namespace PersonalizedLibraryAPI.Controllers
             }
             return Ok("başarıyla güncellendi");
         }
-
-        [HttpPut("book/{reviewId}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public IActionResult UpdateReviewByBookId([FromQuery] int bookId, int reviewId, [FromBody] ReviewDto updateReview)
-        {
-            if(updateReview== null || reviewId != updateReview.Id)
-                return BadRequest(ModelState);
-
-            if(!_reviewRepository.ReviewExists(reviewId))
-                return NotFound();
-
-            if(!ModelState.IsValid)
-                return BadRequest();
-
-            var reviewMap = _mapper.Map<Review>(updateReview);
-            reviewMap.Book = _bookRepository.GetBook(bookId);
-            //kitabın var olup olmadığını kontrol etmek
-            if(!_bookRepository.BookExists(bookId))
-            {
-                ModelState.AddModelError("", "Kitap mevcut değil");
-                return StatusCode(422, ModelState);
-            }
-            if(!_reviewRepository.UpdateReview(reviewMap))
-            {
-                ModelState.AddModelError("", "bir şeyler ters gitti");
-                return StatusCode(500, ModelState);
-            }
-            return Ok("başarıyla güncellendi");
-        }
-
     }
 }

@@ -146,36 +146,5 @@ namespace PersonalizedLibraryAPI.Controllers
             }
             return Ok("başarıyla güncellendi");
         }
-
-        [HttpPut("book/{readingTrackingId}")]
-        [ProducesResponseType(400)]
-        [ProducesResponseType(204)]
-        [ProducesResponseType(404)]
-        public IActionResult UpdateReadingTrackingByBookId([FromQuery] int bookId, int readingTrackingId, [FromBody] ReadingTrackingDto updateReadingTracking)
-        {
-            if(updateReadingTracking == null || readingTrackingId != updateReadingTracking.Id)
-                return BadRequest(ModelState);
-
-            if(!_readingTrackingRepository.ReadingTrackingExists(readingTrackingId))
-                return NotFound();
-
-            if(!ModelState.IsValid)
-                return BadRequest();
-
-            var readingTrackingMap = _mapper.Map<ReadingTracking>(updateReadingTracking);
-            readingTrackingMap.Book = _bookRepository.GetBook(bookId);
-            //kitabın var olup olmadığını kontrol etmek
-            if(!_bookRepository.BookExists(bookId))
-            {
-                ModelState.AddModelError("", "Kitap mevcut değil");
-                return StatusCode(422, ModelState);
-            }
-            if(!_readingTrackingRepository.UpdateReadingTracking(readingTrackingMap))
-            {
-                ModelState.AddModelError("", "bir şeyler ters gitti");
-                return StatusCode(500, ModelState);
-            }
-            return Ok("başarıyla güncellendi");
-        }
     }
 }

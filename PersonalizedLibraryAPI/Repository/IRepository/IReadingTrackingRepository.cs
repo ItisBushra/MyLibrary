@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using PersonalizedLibraryAPI.Models;
 
 namespace PersonalizedLibraryAPI.Repository.IRepository
-{
+{ 
     public interface IReadingTrackingRepository
     {
         ICollection<ReadingTracking> GetReadingTrackings();
