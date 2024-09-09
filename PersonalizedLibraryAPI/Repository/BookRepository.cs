@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using PersonalizedLibraryAPI.Data;
 using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
 
 namespace PersonalizedLibraryAPI.Repository
 {
@@ -69,6 +70,58 @@ namespace PersonalizedLibraryAPI.Repository
             return Save();
         }
 
+        public bool UpdateBook(int categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review)
+        {
+            var existingBook = _dBContext.Books
+                            .Include(b => b.BookCategories)
+                            .Include(b => b.ReadingTracking)
+                            .Include(b => b.Review)
+                            .Include(b=>b.ReadingTracking)
+                            .Include(b=>b.Review)
+                            .FirstOrDefault(b => b.Id == book.Id);
+
+            if (existingBook == null)
+            {
+                return false;
+            }
+            existingBook.Name = book.Name;
+            existingBook.WritersName = book.WritersName;
+            existingBook.StatusId = statusId;
+
+            var existingBookCategory = existingBook.BookCategories.FirstOrDefault();
+            if (existingBookCategory != null)
+            {
+                _dBContext.Remove(existingBookCategory);
+            }
+            existingBook.BookCategories.Add(new BookCategory { BookId = book.Id, CategoryId = categoryId });
+
+
+            var existingBookReview = existingBook.Review;
+            if (existingBookCategory != null)
+            {
+                _dBContext.Remove(existingBookReview);
+            }
+            existingBook.Review = new Review {
+                     BookId = book.Id,
+                     Title = review.Title,
+                     Text = review.Text,
+                     Liked = review.Liked
+                };
+
+            var existingBookReadingTracking = existingBook.Review;
+            if (existingBookReadingTracking != null)
+            {
+                _dBContext.Remove(existingBookReview);
+            }
+            existingBook.ReadingTracking = new ReadingTracking {
+                     BookId = book.Id,
+                     StartDate = readingTracking.StartDate,
+                     EndDate = readingTracking.EndDate,
+                };
+
+            _dBContext.Update(existingBook);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _dBContext.SaveChanges();

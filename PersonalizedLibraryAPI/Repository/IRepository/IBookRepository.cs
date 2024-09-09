@@ -14,6 +14,8 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         bool BookExists(int id);
         bool CreateBook(int categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review);
+
+        bool UpdateBook(int categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review);
         bool Save();
     }
 }
