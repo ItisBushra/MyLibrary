@@ -12,20 +12,11 @@ namespace PersonalizedLibraryAPI.Helper
     {
         public MappingProfiles()
         {
-            CreateMap<Book, BookDto>();
+            CreateMap<Book, BookDto>().ReverseMap();
             CreateMap<Category, CategoryDto>();
             CreateMap<Status, StatusDto>();
-            CreateMap<Review, ReviewDto>();
-            CreateMap<ReadingTracking, ReadingTrackingDto>();
-
-            CreateMap<ReviewDto, Review>()
-            .ForMember(r => r.Id, opt => opt.Ignore());
-
-            CreateMap<ReadingTrackingDto, ReadingTracking>()
-            .ForMember(r => r.Id, opt => opt.Ignore());
-
-            CreateMap<BookDto, Book>()
-            .ForMember(b => b.Id, opt => opt.Ignore());
+            CreateMap<Review, ReviewDto>().ReverseMap();
+            CreateMap<ReadingTracking, ReadingTrackingDto>().ReverseMap();
         }
     }
 }

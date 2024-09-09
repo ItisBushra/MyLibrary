@@ -36,13 +36,16 @@ namespace PersonalizedLibraryAPI.Repository
         {
             return _dBContext.Reviews.Where(r=>r.Id == reviewId).Select(b=>b.Book).FirstOrDefault();
         }
-   
         public bool CreateReview(Review review)
         {
             _dBContext.Add(review);
             return Save();
         }
-
+        public bool UpdateReview(Review review)
+        {
+            _dBContext.Update(review);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _dBContext.SaveChanges();

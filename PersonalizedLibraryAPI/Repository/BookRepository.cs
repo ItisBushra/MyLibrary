@@ -38,27 +38,27 @@ namespace PersonalizedLibraryAPI.Repository
         public bool CreateBook(int categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review)
         {
-            //fetching the category
+            //kategoriyi getirme
             var BookCategoryObj = _dBContext.Categories.Where(c=>c.Id == categoryId).FirstOrDefault();
 
-            // assigning the obj
+            // objenin atanması
             var BookCategory = new BookCategory()
             {
                 Category = BookCategoryObj,
                 Book = book
             };
             
-            //fetching the status
+            //status getirme
             var BookStatus = _dBContext.Statuses.Where(s=>s.Id == statusId).FirstOrDefault();
             book.StatusId = BookStatus.Id;
 
-            //if a review is populated
+            //eğer rivew null değilse
             if(review !=null)
             {
                 _dBContext.Reviews.Add(review); 
                 book.Review = review;
             }
-            //if a reading tracking is populated
+            //eğer reading tracking null değilse
             if(readingTracking !=null)
             {
                 _dBContext.ReadingTrackings.Add(readingTracking);

@@ -44,6 +44,11 @@ namespace PersonalizedLibraryAPI.Repository
             _dBContext.Add(readingTracking);
             return Save();
         }
+        public bool UpdateReadingTracking(ReadingTracking readingTracking)
+        {
+            _dBContext.Update(readingTracking);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _dBContext.SaveChanges();
