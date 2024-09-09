@@ -58,7 +58,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [HttpGet("book/{readingTrackingId}")]
         [ProducesResponseType(200, Type = typeof(Book))]
         [ProducesResponseType(400)]
-        public IActionResult GetBookByReviewId(int readingTrackingId)
+        public IActionResult GetBookByReadingTrackingId(int readingTrackingId)
         {
             var book = _mapper.Map<BookDto>(_readingTrackingRepository.GetBookByReadingTracking(readingTrackingId));
 
@@ -72,7 +72,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [HttpGet("readingTracking/{bookId}")]
         [ProducesResponseType(200, Type = typeof(ReadingTracking))]
         [ProducesResponseType(400)]
-        public IActionResult GetReviewByBookId(int bookId)
+        public IActionResult GetReadingTrackingByBookId(int bookId)
         {
             var readingTracking = _mapper.Map<ReadingTrackingDto>(_readingTrackingRepository.GetReadingTrackingByBook(bookId));
 
@@ -121,6 +121,37 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public IActionResult UpdateReadingTracking([FromQuery] int bookId, int readingTrackingId, [FromBody] ReadingTrackingDto updateReadingTracking)
+        {
+            if(updateReadingTracking == null || readingTrackingId != updateReadingTracking.Id)
+                return BadRequest(ModelState);
+
+            if(!_readingTrackingRepository.ReadingTrackingExists(readingTrackingId))
+                return NotFound();
+
+            if(!ModelState.IsValid)
+                return BadRequest();
+
+            var readingTrackingMap = _mapper.Map<ReadingTracking>(updateReadingTracking);
+            readingTrackingMap.Book = _bookRepository.GetBook(bookId);
+            //kitabın var olup olmadığını kontrol etmek
+            if(!_bookRepository.BookExists(bookId))
+            {
+                ModelState.AddModelError("", "Kitap mevcut değil");
+                return StatusCode(422, ModelState);
+            }
+            if(!_readingTrackingRepository.UpdateReadingTracking(readingTrackingMap))
+            {
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+                return StatusCode(500, ModelState);
+            }
+            return Ok("başarıyla güncellendi");
+        }
+
+        [HttpPut("book/{readingTrackingId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdateReadingTrackingByBookId([FromQuery] int bookId, int readingTrackingId, [FromBody] ReadingTrackingDto updateReadingTracking)
         {
             if(updateReadingTracking == null || readingTrackingId != updateReadingTracking.Id)
                 return BadRequest(ModelState);
