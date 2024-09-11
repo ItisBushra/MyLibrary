@@ -117,5 +117,27 @@ namespace PersonalizedLibraryAPI.Controllers
               
             return Ok("başarıyla güncellendi");
         }
+
+        [HttpDelete("{bookId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteBook(int bookId)
+        {
+            //kitap olup olmasığını kontrol etmek
+            if(!_bookRepository.BookExists(bookId))
+               return NotFound();
+
+            var bookToDelete = _bookRepository.GetBook(bookId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            //nesnenin tamamını silmek
+            if(!_bookRepository.DeleteBook(bookToDelete))
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+
+            return Ok("başarıyla silindi");
+        }
     }
 }

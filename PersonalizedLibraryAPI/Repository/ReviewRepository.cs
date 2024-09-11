@@ -46,6 +46,11 @@ namespace PersonalizedLibraryAPI.Repository
             _dBContext.Update(review);
             return Save();
         }
+        public bool DeleteReview(Review review)
+        {
+            _dBContext.Remove(review);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _dBContext.SaveChanges();

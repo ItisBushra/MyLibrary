@@ -15,6 +15,7 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         bool ReviewExists(int bookId);
         bool CreateReview(Review review);
         bool UpdateReview(Review review);
+        bool DeleteReview(Review review);
         bool Save();
     }
 }

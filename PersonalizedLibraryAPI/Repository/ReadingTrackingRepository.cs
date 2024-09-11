@@ -49,6 +49,11 @@ namespace PersonalizedLibraryAPI.Repository
             _dBContext.Update(readingTracking);
             return Save();
         }
+        public bool DeleteReadingTracking(ReadingTracking readingTracking)
+        {
+            _dBContext.Remove(readingTracking);
+            return Save();
+        }
         public bool Save()
         {
             var saved = _dBContext.SaveChanges();

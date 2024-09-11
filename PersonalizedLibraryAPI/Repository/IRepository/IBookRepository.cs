@@ -16,6 +16,7 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
                          ReadingTracking? readingTracking, Review? review);
 
         bool UpdateBook(int categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review);
+        bool DeleteBook(Book book);
         bool Save();
     }
 }

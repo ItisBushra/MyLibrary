@@ -146,5 +146,25 @@ namespace PersonalizedLibraryAPI.Controllers
             }
             return Ok("başarıyla güncellendi");
         }
+
+        [HttpDelete("{readingTrackingId}")]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        public IActionResult DeleteReadingTracking(int readingTrackingId)
+        {
+            if(!_readingTrackingRepository.ReadingTrackingExists(readingTrackingId))
+               return NotFound();
+
+            var readingTrackingToDelete = _readingTrackingRepository.GetReadingTracking(readingTrackingId);
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if(!_readingTrackingRepository.DeleteReadingTracking(readingTrackingToDelete))
+                ModelState.AddModelError("", "bir şeyler ters gitti");
+
+            return Ok("başarıyla silindi");
+        }
     }
 }

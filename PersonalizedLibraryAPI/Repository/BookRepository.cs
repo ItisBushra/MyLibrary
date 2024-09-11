@@ -7,6 +7,7 @@ using PersonalizedLibraryAPI.Data;
 using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PersonalizedLibraryAPI.Repository
 {
@@ -120,6 +121,37 @@ namespace PersonalizedLibraryAPI.Repository
                 };
 
             _dBContext.Update(existingBook);
+            return Save();
+        }
+
+        public bool DeleteBook(Book book)
+        {
+            var bookToBeDeleted = _dBContext.Books.Include(b => b.BookCategories)
+                            .Include(b => b.ReadingTracking)
+                            .Include(b => b.Review)
+                            .Include(b=>b.ReadingTracking)
+                            .Include(b=>b.Review)
+                            .FirstOrDefault(b => b.Id == book.Id);
+
+            // İlgili İncelemeyi silme
+            if (book.Review != null)
+            {
+                _dBContext.Reviews.Remove(book.Review);
+            }
+
+            // İlgili okuma takibi silme
+            if (book.ReadingTracking != null)
+            {
+                _dBContext.ReadingTrackings.Remove(book.ReadingTracking);
+            }
+
+            // İlgili kitabın kategorisi silme
+            if (book.BookCategories != null)
+            {
+                _dBContext.BookCategories.RemoveRange(book.BookCategories);
+            }     
+
+            _dBContext.Remove(book);
             return Save();
         }
         public bool Save()
