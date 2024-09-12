@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using PersonalizedLibraryAPI.Models;
 
 namespace PersonalizedLibraryAPI.Data
 {
-    public class DBContext:DbContext
+    public class DBContext: IdentityDbContext<AppUser>
     {
         public DBContext(DbContextOptions<DBContext> options): base(options)
         {
@@ -23,6 +25,8 @@ namespace PersonalizedLibraryAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             //Many-to-Many 
             modelBuilder.Entity<BookCategory>().HasKey(bc=> new {bc.BookId, bc.CategoryId});
             modelBuilder.Entity<BookCategory>().HasOne(b=>b.Book).WithMany(bc=>bc.BookCategories).HasForeignKey(b=>b.BookId);
@@ -45,6 +49,23 @@ namespace PersonalizedLibraryAPI.Data
                 .HasOne(b => b.Status)
                 .WithMany(s => s.Books)
                 .HasForeignKey(b => b.StatusId);
+
+
+            //identity role seeding
+            List<IdentityRole> roles = new List<IdentityRole>
+            {
+                new IdentityRole
+                {
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Name = "User",
+                    NormalizedName = "USER"
+                },
+            };
+            modelBuilder.Entity<IdentityRole>().HasData(roles);
         }
     }
 }

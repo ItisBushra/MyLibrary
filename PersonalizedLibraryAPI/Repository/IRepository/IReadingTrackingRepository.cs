@@ -15,7 +15,12 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         bool ReadingTrackingExists(int readingTrackingId);
         bool CreateReadingTracking(ReadingTracking readingTracking);
         bool UpdateReadingTracking(ReadingTracking readingTracking);
-        bool DeleteReadingTracking(ReadingTracking readingTracking);
+
+
+        bool DeleteReadingTracking
+                (ReadingTracking readingTracking);
+
+
         bool Save();
     }
 }
