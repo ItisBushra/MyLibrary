@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj": {}
+    "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj": {}
   },
   "projects": {
-    "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj": {
+    "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
+        "projectUniqueName": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
         "projectName": "PersonalizedLibraryAPI",
-        "projectPath": "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
+        "projectPath": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
         "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-        "outputPath": "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\obj\\",
+        "outputPath": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -49,6 +49,10 @@
               "version": "[8.0.8, )"
             },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.8, )"
+            },
+            "Microsoft.AspNetCore.Mvc.NewtonsoftJson": {
               "target": "Package",
               "version": "[8.0.8, )"
             },

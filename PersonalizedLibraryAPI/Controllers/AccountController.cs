@@ -18,10 +18,13 @@ namespace PersonalizedLibraryAPI.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly SignInManager<AppUser> _signInManager;
         private readonly ITokenService _tokenService;
-        public AccountController(UserManager<AppUser> userManager, ITokenService tokenService)
+        public AccountController(UserManager<AppUser> userManager, 
+                                ITokenService tokenService, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
+            _signInManager = signInManager;
             _tokenService = tokenService;
         }
         [HttpPost("register")]
@@ -60,6 +63,30 @@ namespace PersonalizedLibraryAPI.Controllers
             {
                 return StatusCode(500, e);
             }
+        }
+    
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
+
+            if(user == null) return Unauthorized("Yetkisiz Kullanıcı Adı!");
+
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);//Whats the false for?
+
+            if(!result.Succeeded) return Unauthorized("kullanıcı adı bulunamadı ve/veya şifre yanlış");
+
+            return Ok(
+                new NewUserDto
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    Token = _tokenService.CreateToken(user)
+                }
+            );
         }
     }
 }

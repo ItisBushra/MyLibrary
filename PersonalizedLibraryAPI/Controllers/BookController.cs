@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging; 
 using PersonalizedLibraryAPI.DTOs;
@@ -14,6 +15,7 @@ namespace PersonalizedLibraryAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class BookController : Controller
     {
         private readonly IBookRepository _bookRepository;

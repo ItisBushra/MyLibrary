@@ -143,3 +143,7 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\refint\P
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.pdb
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.genruntimeconfig.cache
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\ref\PersonalizedLibraryAPI.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

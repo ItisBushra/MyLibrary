@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 using System.IdentityModel.Tokens.Jwt;
 using PersonalizedLibraryAPI.Models;
 using Microsoft.IdentityModel.Tokens;
-using PersonalizedLibraryAPI.Interfaces;
+using PersonalizedLibraryAPI.Repository.IRepository;
 using System.Data;
 
-namespace PersonalizedLibraryAPI.Service
+namespace PersonalizedLibraryAPI.Repository
 {
-    public class TokenService : ITokenService
+    public class TokenServiceRepository : ITokenServiceRepository
     {
         private readonly IConfiguration _configuration;
         private readonly SymmetricSecurityKey _key;
-        public TokenService(IConfiguration configuration )
+        public TokenServiceRepository(IConfiguration configuration )
         {
             _configuration = configuration;
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:SigningKey"]));

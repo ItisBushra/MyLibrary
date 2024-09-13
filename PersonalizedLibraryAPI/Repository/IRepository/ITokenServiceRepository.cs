@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using PersonalizedLibraryAPI.Models;
 
-namespace PersonalizedLibraryAPI.Interfaces
+namespace PersonalizedLibraryAPI.Repository.IRepository
 {
-    public interface ITokenService
+    public interface ITokenServiceRepository
     {
         string CreateToken(AppUser user);
     }
