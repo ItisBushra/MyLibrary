@@ -5,9 +5,14 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Personal
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\PersonalizedLibraryAPI.runtimeconfig.json
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\PersonalizedLibraryAPI.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\PersonalizedLibraryAPI.pdb
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Azure.Identity.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Humanizer.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -20,6 +25,9 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsof
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.Relational.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.SqlServer.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.DependencyModel.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Identity.Client.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Identity.Client.Extensions.Msal.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
@@ -135,11 +143,3 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\refint\P
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.pdb
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.genruntimeconfig.cache
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\ref\PersonalizedLibraryAPI.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\AutoMapper.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Core.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Identity.Stores.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Extensions.Options.dll

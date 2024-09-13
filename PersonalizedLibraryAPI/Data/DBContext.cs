@@ -25,8 +25,6 @@ namespace PersonalizedLibraryAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             //Many-to-Many 
             modelBuilder.Entity<BookCategory>().HasKey(bc=> new {bc.BookId, bc.CategoryId});
             modelBuilder.Entity<BookCategory>().HasOne(b=>b.Book).WithMany(bc=>bc.BookCategories).HasForeignKey(b=>b.BookId);
@@ -66,6 +64,7 @@ namespace PersonalizedLibraryAPI.Data
                 },
             };
             modelBuilder.Entity<IdentityRole>().HasData(roles);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "+tUwQK1mE1IWkksQ4ra7ZkRj+dSrZaPrsRHUGAbionaavXY8CPf2P9ioJHATwA6we7LgY5T/f+b1lEEMJgOX1Q==",
+  "dgSpecHash": "CDz6s8OW5UhoFRGtVWRNhg9bhMRb3Nsbdj5Ra5wZmKP1XKZhblzxH6mZu7PlUxyLGMhuQar7dGOCwbMlURn0sQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hp\\PersonalizedLibrary\\personalizedlibraryapi\\PersonalizedLibraryAPI.csproj",
+  "projectFilePath": "c:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hp\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
