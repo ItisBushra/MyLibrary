@@ -1,4 +1,11 @@
-/*index page*/
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing:border-box;
+    font-family: "Caveat", cursive;
+}
+/*index page start*/
 .container
 {
     position: relative;
@@ -9,11 +16,11 @@
 }
 .icon-group {
     display: flex;
-    gap: 10px; /* Adjust the spacing between icons */
+    gap: 10px; 
 }
 
 .icon-group i {
-    font-size: 1.2rem; /* Adjust the icon size */
+    font-size: 1.2rem;
     cursor: pointer;
 }
 
@@ -24,7 +31,7 @@
 }
 
 .icon-group i.bi-star {
-    margin-left: auto; /* Push the star icon to the far right */
+    margin-left: auto;
 }
 
 .card-header
@@ -34,6 +41,7 @@
 }
 .card
 {
+    padding: 0;
     max-width: 100%;
     background-color: transparent; 
     margin: 3rem 1rem 1rem 1rem ;
@@ -47,3 +55,12 @@
     font-size: 40px; 
     color: #000000; 
 }
+/*index page end*/
+
+/*create page start*/
+.create-container
+{
+    max-width: 100%;
+    align-items: center;
+}
+/*create page end*/
