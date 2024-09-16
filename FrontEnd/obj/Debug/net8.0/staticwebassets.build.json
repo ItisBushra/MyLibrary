@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "qTY8Np2YZXX5yIkAgodDUVgLZ9KpZUwAmyTXRYQBqf4=",
+  "Hash": "Medfe96/IIYhtloRPv/icrVNL/f8Nbp53j/wgZmUTwo=",
   "Source": "FrontEnd",
   "BasePath": "_content/FrontEnd",
   "Mode": "Default",
@@ -84,6 +84,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\css\\site.css"
+    },
+    {
+      "Identity": "C:\\Users\\hp\\PersonalizedLibrary\\frontend\\wwwroot\\css\\style.css",
+      "SourceId": "FrontEnd",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\hp\\PersonalizedLibrary\\frontend\\wwwroot\\",
+      "BasePath": "_content/FrontEnd",
+      "RelativePath": "css/style.css",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\css\\style.css"
     },
     {
       "Identity": "C:\\Users\\hp\\PersonalizedLibrary\\frontend\\wwwroot\\favicon.ico",
