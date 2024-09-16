@@ -15,21 +15,15 @@ namespace PersonalizedLibraryAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class BookController : Controller
     {
         private readonly IBookRepository _bookRepository;
-        private readonly IReadingTrackingRepository _readingTrackingRepository;
-        private readonly IReviewRepository _reviewRepository;
 
         private readonly IMapper _mapper;
-        public BookController(IBookRepository bookRepository, IMapper mapper,
-                                IReviewRepository reviewRepository,IReadingTrackingRepository readingTrackingRepository)
+        public BookController(IBookRepository bookRepository, IMapper mapper)
         {
             _mapper = mapper;
             _bookRepository = bookRepository;
-            _reviewRepository = reviewRepository;
-            _readingTrackingRepository = readingTrackingRepository;
         }
 
         [HttpGet]

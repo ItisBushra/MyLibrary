@@ -121,7 +121,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateReview([FromQuery] int bookId, int reviewId, [FromBody] ReviewDto updateReview)
+        public IActionResult UpdateReview([FromQuery] int bookId, int reviewId
+                    , [FromBody] ReviewDto updateReview)
         {
             if(updateReview == null || reviewId != updateReview.Id)
                 return BadRequest(ModelState);

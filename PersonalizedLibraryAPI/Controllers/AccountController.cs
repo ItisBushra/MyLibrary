@@ -9,7 +9,7 @@ using PersonalizedLibraryAPI.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PersonalizedLibraryAPI.DTOs.Account;
-using PersonalizedLibraryAPI.Interfaces;
+using PersonalizedLibraryAPI.Repository.IRepository;
 
 namespace PersonalizedLibraryAPI.Controllers
 {
@@ -19,21 +19,21 @@ namespace PersonalizedLibraryAPI.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly SignInManager<AppUser> _signInManager;
-        private readonly ITokenService _tokenService;
+        private readonly ITokenServiceRepository _tokenServiceRepository;
         public AccountController(UserManager<AppUser> userManager, 
-                                ITokenService tokenService, SignInManager<AppUser> signInManager)
+                                ITokenServiceRepository tokenServiceRepository,
+                                SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _tokenService = tokenService;
+            _tokenServiceRepository = tokenServiceRepository;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterDto registerDto)
         {
             try
             {
-                if(!ModelState.IsValid)
-                   return BadRequest(ModelState);
+                if(!ModelState.IsValid) return BadRequest(ModelState);
                 var appUser = new AppUser
                 {
                     UserName = registerDto.Username,
@@ -45,20 +45,18 @@ namespace PersonalizedLibraryAPI.Controllers
                     var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
                     if(roleResult.Succeeded)
                     {
-                        /*return Ok("Kullanıcı başarıyla oluşturuldu");*/
                         return Ok(
                             new NewUserDto
                             {
                                 UserName = appUser.UserName,
                                 Email = appUser.Email,
-                                Token = _tokenService.CreateToken(appUser)
+                                Token = _tokenServiceRepository.CreateToken(appUser)
                             }
                         );
                     }
                     else return StatusCode(500, roleResult.Errors);
                 }
                 else return StatusCode(500, createdUser.Errors); 
-
             }catch(Exception e)
             {
                 return StatusCode(500, e);
@@ -75,8 +73,7 @@ namespace PersonalizedLibraryAPI.Controllers
 
             if(user == null) return Unauthorized("Yetkisiz Kullanıcı Adı!");
 
-            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);//Whats the false for?
-
+            var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if(!result.Succeeded) return Unauthorized("kullanıcı adı bulunamadı ve/veya şifre yanlış");
 
             return Ok(
@@ -84,7 +81,7 @@ namespace PersonalizedLibraryAPI.Controllers
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    Token = _tokenService.CreateToken(user)
+                    Token = _tokenServiceRepository.CreateToken(user)
                 }
             );
         }

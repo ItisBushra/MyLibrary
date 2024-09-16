@@ -5,11 +5,9 @@ using PersonalizedLibraryAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Identity;
 using PersonalizedLibraryAPI.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using PersonalizedLibraryAPI.Service;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using PersonalizedLibraryAPI.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -57,8 +55,7 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IReadingTrackingRepository, ReadingTrackingRepository>();
-
-builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<ITokenServiceRepository, TokenServiceRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

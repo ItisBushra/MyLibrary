@@ -59,7 +59,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(200, Type = typeof(Book))]
         [ProducesResponseType(400)]
         public IActionResult GetBookByReadingTrackingId(int readingTrackingId)
-        {
+        { 
             var book = _mapper.Map<BookDto>(_readingTrackingRepository.GetBookByReadingTracking(readingTrackingId));
 
             //validation
