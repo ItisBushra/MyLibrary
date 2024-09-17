@@ -3,14 +3,21 @@
 @{
     ViewData["Title"] = "Create";
 }
-
-<div class="create-container">
-    <div class="row card-container">
+<div class="container">
+      <div class="row card-container">
 <div class="card text-dark">
-  <div class="card-header">Book Title</div>
+  <div class="card-header d-flex justify-content-between align-items-center"> <strong>
+    <h1>Book Title</h1></strong>
+    <div class="icon-group">
+    <i class="bi bi-trash3"></i>
+        <i class="bi bi-pencil"></i>
+    <i class="bi bi-star"></i>
+    </div>
+  </div> ,
   <div class="card-body">
-    <h5 class="card-title">Review Title</h5>
-    <p class="card-text">Review Text</p>
-        <small>category, status, reading tracking</small>
+    <h2 class="card-title">Review Title</h2>
+    <h3 class="card-text">Review Text</h3>
+        <p>category, status, reading tracking</p>
   </div>
+</div>
 </div>

@@ -38,6 +38,18 @@ namespace PersonalizedLibraryAPI.Controllers
             return Ok(books);
         }
 
+        [HttpGet("GetAll")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Book>))]
+        public IActionResult GetBooksDetailed()
+        {
+            var books = _bookRepository.GetBooks();
+
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return Ok(books);
+        }
+
         [HttpGet("{bookId}")]
         [ProducesResponseType(200, Type = typeof(Book))]
         [ProducesResponseType(400)]

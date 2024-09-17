@@ -1,53 +1,62 @@
-*
-{
+*{
     margin: 0;
     padding: 0;
     box-sizing:border-box;
     font-family: "Caveat", cursive;
 }
 /*index page start*/
-.container
-{
+.container{
     position: relative;
 }
-.card-container
-{
+.card-container{
     padding-top: 3rem;
 }
 .icon-group {
     display: flex;
     gap: 10px; 
 }
-
 .icon-group i {
     font-size: 1.2rem;
     cursor: pointer;
 }
-
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
 .icon-group i.bi-star {
     margin-left: auto;
 }
-
-.card-header
-{
-    max-height: 100%;
-    padding: 1rem;
+.card-header {
+    display: flex;
+    background-color: transparent;
+    flex-direction: column;
 }
-.card
-{
+.header-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+.icon-group {
+    display: flex;
+    flex-wrap: wrap; 
+}
+.category-container {
+    margin-top: 10px; 
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.category-container p {
+    margin: 0; 
+    padding: 0;
+}
+.card{
+    border-color: #B8001F;
+    border-radius: 3.125rem ;
+    border-width: 0.1rem;
     padding: 0;
     max-width: 100%;
     background-color: transparent; 
     margin: 3rem 1rem 1rem 1rem ;
 }
-.bi-plus-circle
-{
+.bi-plus-circle{
     position: absolute; 
     padding-bottom: 3rem;
     top: 10px; 

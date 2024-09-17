@@ -1,7 +1,18 @@
+using Microsoft.EntityFrameworkCore;
+using PersonalizedLibraryAPI.Data;
+using PersonalizedLibraryAPI.Repository;
+using PersonalizedLibraryAPI.Repository.IRepository;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+
+// Add DbContext from the API project
+builder.Services.AddDbContext<PersonalizedLibraryAPI.Data.DBContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 

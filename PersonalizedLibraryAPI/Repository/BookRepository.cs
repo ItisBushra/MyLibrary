@@ -34,8 +34,9 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public ICollection<Book> GetBooks()
         {
-            return _dBContext.Books
-                    .OrderBy(b=>b.Id).ToList();
+            return _dBContext.Books.Include(s=>s.Status)
+                    .Include(r=>r.Review).Include(re=>re.ReadingTracking)
+                    .Include(c=>c.BookCategories).ThenInclude(bc => bc.Category).OrderBy(b=>b.Id).ToList();
         }
         public bool CreateBook(int categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review)

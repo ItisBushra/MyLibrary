@@ -13,6 +13,8 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsof
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.Internal.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.CodeAnalysis.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -40,6 +42,8 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsof
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Mono.TextTemplating.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerUI.dll
@@ -143,7 +147,3 @@ C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\refint\P
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.pdb
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\PersonalizedLibraryAPI.genruntimeconfig.cache
 C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\obj\Debug\net8.0\ref\PersonalizedLibraryAPI.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.dll
-C:\Users\hp\PersonalizedLibrary\personalizedlibraryapi\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

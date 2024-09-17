@@ -1,19 +1,34 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PersonalizedLibraryAPI.Models;
+using PersonalizedLibraryAPI.Repository.IRepository;
+using PersonalizedLibraryAPI.Data;
+using Newtonsoft.Json;
 namespace FrontEnd.Pages;
 
 public class IndexModel : PageModel
 {
-    private readonly ILogger<IndexModel> _logger;
+    private readonly HttpClient _httpClient;
+    public IEnumerable<Book> Books { get; set; }
 
-    public IndexModel(ILogger<IndexModel> logger)
+    public IndexModel(HttpClient httpClient)
     {
-        _logger = logger;
+        _httpClient = httpClient;
     }
 
-    public void OnGet()
+    public async Task OnGetAsync()
     {
+        try
+        {
+            var response = await _httpClient.GetStringAsync("http://localhost:5014/api/Book/GetAll");
+            Books = JsonConvert.DeserializeObject<List<Book>>(response)?? new List<Book>(); 
+        }
+        catch (HttpRequestException ex)
+        {
+            // Log the error
+            Console.WriteLine($"Bir hata olmuştur: {ex.Message}");
+            Books = new List<Book>(); // Set to empty list
+        }
 
     }
 }
