@@ -25,10 +25,8 @@ public class IndexModel : PageModel
         }
         catch (HttpRequestException ex)
         {
-            // Log the error
             Console.WriteLine($"Bir hata olmuştur: {ex.Message}");
-            Books = new List<Book>(); // Set to empty list
+            Books = new List<Book>(); 
         }
-
     }
 }

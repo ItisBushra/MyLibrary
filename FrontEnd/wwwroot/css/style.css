@@ -13,7 +13,8 @@
 }
 .icon-group {
     display: flex;
-    gap: 10px; 
+    gap: 0.625rem; 
+    align-items: flex-end;
 }
 .icon-group i {
     font-size: 1.2rem;
@@ -29,19 +30,17 @@
 }
 .header-content {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
 }
 .icon-group {
     display: flex;
-    flex-wrap: wrap; 
 }
 .category-container {
-    margin-top: 10px; 
+    margin-top: 0.625rem; 
     display: flex;
     flex-wrap: wrap;
-    gap: 5px;
+    gap: 0.313rem;
 }
 .category-container p {
     margin: 0; 
@@ -59,9 +58,9 @@
 .bi-plus-circle{
     position: absolute; 
     padding-bottom: 3rem;
-    top: 10px; 
-    right: 10px;
-    font-size: 40px; 
+    top: 0.625rem; 
+    right: 0.625rem;
+    font-size: 2.5rem; 
     color: #000000; 
 }
 /*index page end*/

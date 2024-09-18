@@ -30,11 +30,27 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <h2 class="card-title">@book.Review?.Title</h2>
-                        <h3 class="card-text">@book.Review?.Text</h3>
+                        @if (book.Review != null)
+                        {
+                            <h2 class="card-title">@book.Review?.Title</h2>
+                            <h3 class="card-text">@book.Review?.Text</h3>
+                        }
+                        else
+                        {
+                            <h2 class="card-title">"Bir İnceleme Henüz Eklenmedi"</h2>
+                        }
                         <p>Kitap Durumu: @book.Status.Name</p>
-                        <p>Kitap Okuma Tarihi: @book.ReadingTracking?.StartDate -> @book.ReadingTracking?.EndDate</p>
-                    </div>
+
+                            @if (book.ReadingTracking != null)
+                            {
+                                <p>Kitap Okuma Tarihi: @book.ReadingTracking.StartDate -> @book.ReadingTracking.EndDate</p>
+                            }
+                            else
+                            {
+                                <p>Kitap Okuma Tarihi Henüz Belirlenmedi</p>
+                            } 
+                                
+                        </div>
                 </div>
             </div>
         }
