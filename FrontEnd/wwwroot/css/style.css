@@ -36,7 +36,7 @@
 .icon-group {
     display: flex;
 }
-.category-container {
+.category-container, .writer-container {
     margin-top: 0.625rem; 
     display: flex;
     flex-wrap: wrap;
@@ -50,7 +50,7 @@
     border-color: #B8001F;
     border-radius: 3.125rem ;
     border-width: 0.1rem;
-    padding: 0;
+    padding: 1rem;
     max-width: 100%;
     background-color: transparent; 
     margin: 3rem 1rem 1rem 1rem ;
@@ -70,5 +70,32 @@
 {
     max-width: 100%;
     align-items: center;
+}
+.form-group
+{
+    padding-top: 1rem;
+}
+.form-check
+{
+    padding-right: 2rem;
+    align-self: end;
+}
+.create-button
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button
+{
+    padding: 1rem;
+    width: 40%;
+    background-color: #B8001F;
+    border-radius:3.125rem ;
+}
+form
+{
+    padding: 1rem;
+    margin:1rem;
 }
 /*create page end*/

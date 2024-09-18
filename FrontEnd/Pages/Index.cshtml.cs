@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using PersonalizedLibraryAPI.Models;
-using PersonalizedLibraryAPI.Repository.IRepository;
-using PersonalizedLibraryAPI.Data;
 using Newtonsoft.Json;
+using PersonalizedLibraryAPI.Models;
 namespace FrontEnd.Pages;
 
 public class IndexModel : PageModel

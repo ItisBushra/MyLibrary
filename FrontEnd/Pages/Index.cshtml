@@ -15,12 +15,15 @@
                 <div class="card text-dark">
                     <div class="card-header">
                         <div class="header-content">
-                            <h1>@book.Name</h1>
+                            <h1>@book.Name</h1> 
                             <div class="icon-group">
                                 <i class="bi bi-trash3"></i>
                                 <i class="bi bi-pencil"></i>
                                 <i class="bi bi-star"></i>
                             </div>
+                        </div>
+                        <div class="writer-container">
+                            <h2>Yazar: @book.WritersName</h2>
                         </div>
                         <div class="category-container">
                             @foreach (var category in book.BookCategories)

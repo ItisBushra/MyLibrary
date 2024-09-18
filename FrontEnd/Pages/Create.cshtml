@@ -1,23 +1,69 @@
 @page
 @model FrontEnd.Pages.Create
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Yeni Kitap Oluşturma";
 }
 <div class="container">
-      <div class="row card-container">
-<div class="card text-dark">
-  <div class="card-header d-flex justify-content-between align-items-center"> <strong>
-    <h1>Book Title</h1></strong>
-    <div class="icon-group">
-    <i class="bi bi-trash3"></i>
-        <i class="bi bi-pencil"></i>
-    <i class="bi bi-star"></i>
+    <div class="row card-container">
+            <div class="col-md-12 mb-3">
+              <form method="post">
+                 <div class="card text-dark">
+                    <div class="card-body">
+                         <div class="form-group">
+                                 <label asp-for="statusId">Durum</label>
+                            <select asp-for="statusId" class="form-control" asp-items="Model.StatusOptions">
+                                <option value="">Kitabın Durumunu Seç</option>
+                            </select>
+                        </div>
+                               <div class="form-group">
+                                    <label asp-for="catId">Katagori</label>
+                                <select asp-for="catId" class="form-control" asp-items="Model.CategoryOptions">
+                                    <option value="">Kitabın Kategoresi Seç</option>
+                                </select>
+                        </div>
+                         <div class="form-group">
+                              <label asp-for="ReadingTrackingDto.StartDate"></label>
+                              <input asp-for="ReadingTrackingDto.StartDate" class="form-control"/>
+                              <span asp-validation-for="ReadingTrackingDto.StartDate" class="text-danger"></span>
+                        </div>  
+                          <div class="form-group">
+                              <label asp-for="ReadingTrackingDto.EndDate"></label>
+                              <input asp-for="ReadingTrackingDto.EndDate" class="form-control"/>
+                              <span asp-validation-for="ReadingTrackingDto.EndDate" class="text-danger"></span>
+                        </div> 
+                        
+                        <div class="form-group">
+                              <label asp-for="ReviewDto.Title">İnceleme Konuyu</label>
+                              <input asp-for="ReviewDto.Title" class="form-control"/>
+                              <span asp-validation-for="ReviewDto.Title" class="text-danger"></span>
+                          </div>
+                         <div class="form-group">
+                            
+                        <label asp-for="ReviewDto.Text">Metin</label>
+                              <input asp-for="ReviewDto.Text" class="form-control"/>
+                              <span asp-validation-for="ReviewDto.Text" class="text-danger"></span>
+                      </div>
+                      
+                       <div class="form-group form-check">
+                             <label asp-for="ReviewDto.Liked" class="form-check-label">Beğen?</label>
+                            <input asp-for="ReviewDto.Liked" class="form-check-input" type="checkbox" />
+                            <span asp-validation-for="ReviewDto.Liked" class="text-danger"></span>
+                    </div>
+                          <div class="form-group">
+                              <label asp-for="BookDto.Name">Kitabın Adı</label>
+                              <input asp-for="BookDto.Name" class="form-control"/>
+                              <span asp-validation-for="BookDto.Name" class="text-danger"></span>
+                          </div>
+                            <div class="form-group">
+                              <label asp-for="BookDto.WritersName">Yazarın Adı</label>
+                              <input asp-for="BookDto.WritersName" class="form-control"/>
+                              <span asp-validation-for="BookDto.WritersName" class="text-danger"></span>
+                        </div>
+                </div>
+                <div class="create-button">
+                    <button type="submit">Kitap Oluştur</button>
+                </div>
+              </form>
+            </div>
     </div>
-  </div> ,
-  <div class="card-body">
-    <h2 class="card-title">Review Title</h2>
-    <h3 class="card-text">Review Text</h3>
-        <p>category, status, reading tracking</p>
-  </div>
-</div>
 </div>
