@@ -17,14 +17,12 @@ namespace FrontEnd.Pages
     public class Create : PageModel
     {
         private readonly IHttpClientFactory _clientFactory;
-
         [BindProperty]
         public BookDto BookDto { get; set; }
         [BindProperty]
         public ReviewDto ReviewDto { get; set; }
         [BindProperty]
         public ReadingTrackingDto ReadingTrackingDto { get; set; }
-
         [BindProperty]
         public int catId { get; set; }
         [BindProperty]
@@ -38,23 +36,23 @@ namespace FrontEnd.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
-            // Fetch statuses from the API
+            // API'den durumları getirin
             var client = _clientFactory.CreateClient();
             var response1 = await client.GetStringAsync("http://localhost:5014/api/Status");
             var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(response1);
 
-            //fetching categories
+            //kategorileri getirme
             var response2 = await client.GetStringAsync("http://localhost:5014/api/Category");
             var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response2);
 
-            // Populate StatusOptions
+            // StatusOptions'ı Doldur
             StatusOptions = statuses.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name
             }).ToList();
 
-            // Populate CategoryOptions
+            // CategoryOptions'ı Doldur 
             CategoryOptions = categories.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
@@ -65,50 +63,39 @@ namespace FrontEnd.Pages
         }
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
+            if (!ModelState.IsValid){
                 await OnGetAsync();
                 return Page();
             }
+
             var client = _clientFactory.CreateClient();
-                
-                // Create a new BookDto with all required data
-                var bookDto = new BookDto
-                {
+            
+                // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
+                var bookDto = new BookDto{
                     Name = BookDto.Name,
                     WritersName = BookDto.WritersName
-                    // Add other properties if needed
                 };
-                
-                // Serialize the bookDto to JSON
+                // bookDto'yu JSON'a serileştirme
                 var bookJson = JsonConvert.SerializeObject(bookDto);
                 var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
-
-                // Construct the request URI
+                // İstek URI'sini oluşturun
                 var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}&catId={catId}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
-
-                try
-                {
-                    // Post the request
+                try{
+                    // İstek gönderin
                     var response = await client.PostAsync(requestUri, content);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToPage("Index");
-                    }
+                    if (response.IsSuccessStatusCode)  return RedirectToPage("Index");
                     else
                     {
                         var errorResponse = await response.Content.ReadAsStringAsync();
                         ModelState.AddModelError("", $"Hata: {errorResponse}");
                     }
                 }
-                catch (HttpRequestException ex)
-                {
-                    ModelState.AddModelError("", $"HTTP isteği Hata: {ex.Message}");
+                catch (HttpRequestException ex){
+                    ModelState.AddModelError("", $"HTTP isteğin Hatası: {ex.Message}");
                 }
-                
                 return Page();
         }
       }

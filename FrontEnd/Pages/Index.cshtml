@@ -2,6 +2,7 @@
 @model IndexModel
 @{
     ViewData["Title"] = "Kitap Listesi";
+    string liked ="";
 }
 
 <div class="container">
@@ -15,11 +16,15 @@
                 <div class="card text-dark">
                     <div class="card-header">
                         <div class="header-content">
+                   <input hidden asp-for="@book.Id">
                             <h1>@book.Name</h1> 
                             <div class="icon-group">
                                 <i class="bi bi-trash3"></i>
-                                <i class="bi bi-pencil"></i>
-                                <i class="bi bi-star"></i>
+                                <a asp-page="/Update" asp-route-id="@book.Id"><i class="bi bi-pencil"></i></a>
+                                @{
+                                    liked = book.Review?.Liked == true ? "bi bi-star-fill" : "bi bi-star";
+                                }
+                                <i class="@liked"></i>
                             </div>
                         </div>
                         <div class="writer-container">
@@ -43,19 +48,22 @@
                             <h2 class="card-title">"Bir İnceleme Henüz Eklenmedi"</h2>
                         }
                         <p>Kitap Durumu: @book.Status.Name</p>
-
-                            @if (book.ReadingTracking != null)
-                            {
-                                <p>Kitap Okuma Tarihi: @book.ReadingTracking.StartDate -> @book.ReadingTracking.EndDate</p>
-                            }
-                            else
-                            {
-                                <p>Kitap Okuma Tarihi Henüz Belirlenmedi</p>
-                            } 
+                                <p>Kitap Okuma Tarihi 
+                                    @if (book?.ReadingTracking != null)
+                                    {
+                                            <text>
+                                                @book.ReadingTracking.StartDate.Value.ToString("dd-MM-yyyy") - @book.ReadingTracking.EndDate.Value.ToString("dd-MM-yyyy")
+                                            </text>
+                                    }
+                                    else
+                                    {
+                                        <text>Tarihleri Henüz Belirlenmedi</text>
+                                    }
+                                      </p>
                                 
                         </div>
                 </div>
-            </div>
-        }
+            </div>                                
+            }
     </div>
 </div>

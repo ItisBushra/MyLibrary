@@ -1,26 +1,28 @@
-@page
-@model FrontEnd.Pages.Create
+@page "{id:int}"
+@model FrontEnd.Pages.Update
 @{
-    ViewData["Title"] = "Yeni Kitap Oluşturma";
+    ViewData["Title"] = "Kitap Güncelleme";
 }
+
 <h1>@ViewData["Title"]</h1>
 
 <div class="container">
     <div class="row card-container">
             <div class="col-md-12 mb-3">
               <form method="post">
+                   <input hidden asp-for="BookDto.Id">
                  <div class="card text-dark">
                     <div class="card-body">
                          <div class="form-group">
                                  <label asp-for="statusId">Durum</label>
                             <select asp-for="statusId" class="form-control" asp-items="Model.StatusOptions">
-                                <option value="">Kitabın Durumunu Seç</option>
+                                <option value="statusId">Kitabın Durumunu Seç</option>
                             </select>
                         </div>
                                <div class="form-group">
                                     <label asp-for="catId">Katagori</label>
                                 <select asp-for="catId" class="form-control" asp-items="Model.CategoryOptions">
-                                    <option value="">Kitabın Kategoresi Seç</option>
+                                    <option value="catId">Kitabın Kategoresi Seç</option>
                                 </select>
                         </div>
                          <div class="form-group">
@@ -38,6 +40,7 @@
                               <input asp-for="ReviewDto.Title" class="form-control"/>
                               <span asp-validation-for="ReviewDto.Title" class="text-danger"></span>
                           </div>
+
                          <div class="form-group">
                         <label asp-for="ReviewDto.Text">Metin</label>
                               <input asp-for="ReviewDto.Text" class="form-control"/>
@@ -59,8 +62,9 @@
                               <span asp-validation-for="BookDto.WritersName" class="text-danger"></span>
                         </div>
                 </div>
+           </div>
                 <div class="create-button">
-                    <button type="submit">Kitap Oluştur</button>
+                    <button type="submit">Kitap Gencelle</button>
                 </div>
               </form>
             </div>
