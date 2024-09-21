@@ -42,16 +42,13 @@ namespace FrontEnd.Pages
 
             var client = _clientFactory.CreateClient();
 
-            try
-            {
+            try{
                 //Book getirme
                 var bookResponse = await client.GetAsync($"http://localhost:5014/api/Book/{id}");
-                if (!bookResponse.IsSuccessStatusCode)
-                    return NotFound();
-
+                if (!bookResponse.IsSuccessStatusCode) return NotFound();
+                    
                 var book = await bookResponse.Content.ReadFromJsonAsync<Book>();
-                if (book == null)
-                    return NotFound();
+                if (book == null) return NotFound();
 
                 // BookDto doldur
                 BookDto = new BookDto
@@ -62,18 +59,18 @@ namespace FrontEnd.Pages
                 };
 
                 // ReadingTracking getirme
-                var readingTrackingResponse = await client.GetAsync($"http://localhost:5014/api/ReadingTracking/readingTracking/{id}");
+                var readingTrackingResponse = await client.GetAsync
+                                    ($"http://localhost:5014/api/ReadingTracking/readingTracking/{id}");
+
                 if (readingTrackingResponse.IsSuccessStatusCode)
-                {
                     ReadingTrackingDto = await readingTrackingResponse.Content.ReadFromJsonAsync<ReadingTrackingDto>();
-                }
 
                 //Review getirme
-                var reviewResponse = await client.GetAsync($"http://localhost:5014/api/Review/review/{id}");
+                var reviewResponse = await client.GetAsync
+                                    ($"http://localhost:5014/api/Review/review/{id}");
+
                 if (reviewResponse.IsSuccessStatusCode)
-                {
                     ReviewDto = await reviewResponse.Content.ReadFromJsonAsync<ReviewDto>();
-                }
 
                 // tüm durumler getirme
                 var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");
@@ -96,19 +93,19 @@ namespace FrontEnd.Pages
                 {
                     Value = c.Id.ToString(),
                     Text = c.Name,
-                    Selected = book.BookCategories?.Any(bc => bc.CategoryId == c.Id) ?? false
+                    Selected = book.BookCategories?
+                                    .Any(bc => bc.CategoryId == c.Id) ?? false
                 }).ToList() ?? new List<SelectListItem>();
 
                 // Mevcut durumu ve kategoriyi ayarlama
                 statusId = book.StatusId;
-                catId = book.BookCategories?.FirstOrDefault()?.CategoryId ?? 0;
+                catId = book.BookCategories?
+                            .FirstOrDefault()?.CategoryId ?? 0;
 
                 return Page();
             }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "İstek işlenirken bir hata oluştu.");
+            catch (Exception ex){// İstisna durumunu kaydet
+                   return StatusCode(500, "İstek işlenirken bir hata oluştu.");
             }
         }
 
@@ -118,7 +115,6 @@ namespace FrontEnd.Pages
                 await OnGetAsync(id);
                 return Page();
             }
-
             var client = _clientFactory.CreateClient();
             
             // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
@@ -134,9 +130,7 @@ namespace FrontEnd.Pages
             var requestUri = $"http://localhost:5014/api/Book/{id}?statusId={statusId}&catId={catId}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
-            try
-            {
-                // İstek gönderin
+            try{// İstek gönderin
                 var response = await client.PutAsync(requestUri, content);
 
                 if (response.IsSuccessStatusCode)  return RedirectToPage("Index");

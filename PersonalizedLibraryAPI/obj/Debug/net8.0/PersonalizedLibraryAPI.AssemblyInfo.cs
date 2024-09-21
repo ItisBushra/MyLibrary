@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PersonalizedLibraryAPI")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+aacd57ed3cb2d2bfeb70d312df436c2a855028ec")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f7d914efb79a8f42171320d70edfd65cf6fdffcc")]
 [assembly: System.Reflection.AssemblyProductAttribute("PersonalizedLibraryAPI")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PersonalizedLibraryAPI")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

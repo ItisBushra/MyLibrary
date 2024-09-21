@@ -5,6 +5,10 @@
     font-family: "Caveat", cursive;
 }
 /*index page start*/
+.bi-trash3
+{
+    color: red;
+}
 .container{
     position: relative;
 }

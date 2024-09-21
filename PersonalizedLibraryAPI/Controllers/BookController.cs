@@ -43,11 +43,11 @@ namespace PersonalizedLibraryAPI.Controllers
         public IActionResult GetBooksDetailed()
         {
             var books = _bookRepository.GetBooks();
-
+            var bookDetailsDtos = _mapper.Map<List<BookDetailsDto>>(books);
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            return Ok(books);
+            return Ok(bookDetailsDtos);
         }
 
         [HttpGet("{bookId}")]
