@@ -4697,11 +4697,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\hp\\PersonalizedLibrary\\personalizedlibraryapi\\PersonalizedLibraryAPI.csproj",
+      "projectUniqueName": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
       "projectName": "PersonalizedLibraryAPI",
-      "projectPath": "C:\\Users\\hp\\PersonalizedLibrary\\personalizedlibraryapi\\PersonalizedLibraryAPI.csproj",
+      "projectPath": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\PersonalizedLibraryAPI.csproj",
       "packagesPath": "C:\\Users\\hp\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\hp\\PersonalizedLibrary\\personalizedlibraryapi\\obj\\",
+      "outputPath": "C:\\Users\\hp\\PersonalizedLibrary\\PersonalizedLibraryAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\hp\\AppData\\Roaming\\NuGet\\NuGet.Config",

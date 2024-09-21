@@ -95,4 +95,29 @@ public class IndexModel : PageModel
             return StatusCode(500, "İstek işlenirken bir hata oluştu.");
         }
     }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> OnDeleteAsync(int id)
+    {
+        if (!ModelState.IsValid || id == null){
+            await OnGetAsync();
+            return Page();
+        }
+        var client = _clientFactory.CreateClient();
+        try
+        {
+            var response = await client.DeleteAsync($"http://localhost:5014/api/Book/{id}");
+            
+            if (!response.IsSuccessStatusCode)return NotFound();
+            return new JsonResult(new { success = true });
+            
+            
+            await OnGetAsync();
+            return new JsonResult(new { success = true }); // Return success message
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, "Request failed: " + ex.Message);
+        }
+    }
 }
