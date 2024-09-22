@@ -60,17 +60,46 @@ namespace FrontEnd.Pages
 
                 // ReadingTracking getirme
                 var readingTrackingResponse = await client.GetAsync
-                                    ($"http://localhost:5014/api/ReadingTracking/readingTracking/{id}");
+                        ($"http://localhost:5014/api/ReadingTracking/readingTracking/{id}");
 
-                if (readingTrackingResponse.IsSuccessStatusCode)
-                    ReadingTrackingDto = await readingTrackingResponse.Content.ReadFromJsonAsync<ReadingTrackingDto>();
+                if (!readingTrackingResponse.IsSuccessStatusCode) return NotFound();
+                if(readingTrackingResponse.ReasonPhrase == "No Content") 
+                    ReadingTrackingDto = new ReadingTrackingDto();
+                else
+                {
+                    var readingTracking = await readingTrackingResponse.Content.ReadFromJsonAsync<ReadingTracking>();
+                    if(readingTracking == null) return NotFound();
+
+                    ReadingTrackingDto = new ReadingTrackingDto
+                    {
+                        Id = readingTracking.Id,
+                        StartDate = readingTracking.StartDate,
+                        EndDate = readingTracking.EndDate
+                    };
+                
+                }
 
                 //Review getirme
                 var reviewResponse = await client.GetAsync
                                     ($"http://localhost:5014/api/Review/review/{id}");
 
-                if (reviewResponse.IsSuccessStatusCode)
-                    ReviewDto = await reviewResponse.Content.ReadFromJsonAsync<ReviewDto>();
+                if (!reviewResponse.IsSuccessStatusCode) return NotFound();
+                if(reviewResponse.ReasonPhrase == "No Content")
+                    ReviewDto = new ReviewDto();
+                else
+                {
+                    var review = await reviewResponse.Content.ReadFromJsonAsync<Review>();
+
+                    if(review == null) return NotFound();
+
+                    ReviewDto = new ReviewDto
+                    {
+                        Id = review.Id,
+                        Text = review.Text,
+                        Title = review.Title,
+                        Liked = review.Liked,
+                    };                  
+                }
 
                 // tüm durumler getirme
                 var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");

@@ -117,7 +117,7 @@ public class IndexModel : PageModel
         }
         catch (Exception ex)
         {
-            return StatusCode(500, "Request failed: " + ex.Message);
+            return StatusCode(500, "istek başarısız oldu: " + ex.Message);
         }
     }
 }

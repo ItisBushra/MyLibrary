@@ -69,7 +69,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [HttpPost]
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
-        public IActionResult CreateBook([FromQuery] int statusId, [FromQuery] int catId, 
+        public IActionResult CreateBook([FromQuery] int statusId, [FromQuery] List<int> catId, 
                                         [FromBody] BookDto bookCreate, [FromQuery] ReadingTrackingDto?
                                          readingTracking, [FromQuery] ReviewDto? review)
         {
@@ -102,7 +102,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateBook([FromQuery] int catId, [FromQuery] int statusId, int bookId, [FromBody] BookDto updateBook,[FromQuery] ReadingTrackingDto?
+        public IActionResult UpdateBook([FromQuery] List<int> catId, [FromQuery] int statusId, int bookId, [FromBody] BookDto updateBook,[FromQuery] ReadingTrackingDto?
                                          readingTracking, [FromQuery] ReviewDto? review)
         {
             if(updateBook == null || bookId != updateBook.Id)

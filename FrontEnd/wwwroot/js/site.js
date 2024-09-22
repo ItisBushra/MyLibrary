@@ -10,7 +10,6 @@ async function deleteBook(id) {
                 'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
             }
         });
-
         if (response.ok) {
             const result = await response.json();
             if (result.success) {
@@ -26,29 +25,3 @@ async function deleteBook(id) {
         alert('İstek başarısız oldu: ' + error);
     }
 }
-
-function Delete(url) {
-    Swal.fire({
-      title: "Emin misiniz?",
-      text: "Bunu geri döndüremezsiniz!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Evet, kaldır!",
-      cancelButtonText: "Hayır, iptal et!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        $.ajax({
-          url: url,
-          type: "DELETE",
-          headers: {
-            'RequestVerificationToken': $('input[name="__RequestVerificationToken"]').val()
-          },
-          success: function () {
-            window.location.reload();
-          },
-        });
-      }
-    });
-  }

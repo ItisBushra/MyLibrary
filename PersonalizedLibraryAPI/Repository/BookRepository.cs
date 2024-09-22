@@ -38,19 +38,18 @@ namespace PersonalizedLibraryAPI.Repository
                     .Include(r=>r.Review).Include(re=>re.ReadingTracking)
                     .Include(c=>c.BookCategories).ThenInclude(bc => bc.Category).OrderBy(b=>b.Id).ToList();
         }
-        public bool CreateBook(int categoryId, int statusId, Book book,
+        public bool CreateBook(List<int> categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review)
         {
             //kategoriyi getirme
-            var BookCategoryObj = _dBContext.Categories.Where(c=>c.Id == categoryId).FirstOrDefault();
+            var BookCategoryObj = _dBContext.Categories.Where(c => categoryId.Contains(c.Id)).ToList();
 
             // objenin atanması
-            var BookCategory = new BookCategory()
+            var BookCategory = BookCategoryObj.Select(category => new BookCategory
             {
-                Category = BookCategoryObj,
+                Category = category,
                 Book = book
-            };
-            
+            }).ToList();
             //status getirme
             var BookStatus = _dBContext.Statuses.Where(s=>s.Id == statusId).FirstOrDefault();
             book.StatusId = BookStatus.Id;
@@ -67,15 +66,16 @@ namespace PersonalizedLibraryAPI.Repository
                 _dBContext.ReadingTrackings.Add(readingTracking);
                 book.ReadingTracking = readingTracking;
             }
-            _dBContext.Add(BookCategory);
+            _dBContext.BookCategories.AddRange(BookCategory);
             _dBContext.Add(book);
             return Save();
         }
 
-        public bool UpdateBook(int categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review)
+        public bool UpdateBook(List<int> categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review)
         {
             var existingBook = _dBContext.Books
                             .Include(b => b.BookCategories)
+                                .ThenInclude(bc => bc.Category)
                             .Include(b => b.ReadingTracking)
                             .Include(b => b.Review)
                             .Include(b=>b.ReadingTracking)
@@ -90,14 +90,17 @@ namespace PersonalizedLibraryAPI.Repository
             existingBook.WritersName = book.WritersName;
             existingBook.StatusId = statusId;
 
-            var existingBookCategory = existingBook.BookCategories.FirstOrDefault();
-            if (existingBookCategory != null)
+            var existingBookCategory = existingBook.BookCategories.ToList();
+            foreach(var category in existingBookCategory)
             {
-                _dBContext.Remove(existingBookCategory);
+                _dBContext.Remove(category);
             }
-            existingBook.BookCategories.Add(new BookCategory { BookId = book.Id, CategoryId = categoryId });
-
-
+            foreach(var catId in categoryId)
+            {
+                existingBook.BookCategories.
+                    Add(new BookCategory { BookId = book.Id, CategoryId = catId});
+            }
+            
             var existingBookReview = existingBook.Review;
             if (existingBookCategory != null)
             {

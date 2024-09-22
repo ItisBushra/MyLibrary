@@ -20,10 +20,13 @@
                             </select>
                         </div>
                                <div class="form-group">
+                                @foreach(var cat in Model.CategoryOptions)
+                                {
                                     <label asp-for="catId">Katagori</label>
-                                <select asp-for="catId" class="form-control" asp-items="Model.CategoryOptions">
-                                    <option value="catId">Kitabın Kategoresi Seç</option>
-                                </select>
+                                    <select asp-for="catId" class="form-control" asp-items="Model.CategoryOptions">
+                                        <option value="catId">Kitabın Kategoresi Seç</option>
+                                    </select>
+                                }
                         </div>
                          <div class="form-group">
                               <label asp-for="ReadingTrackingDto.StartDate"></label>

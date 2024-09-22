@@ -12,10 +12,10 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         Book GetBook(int id);
         Book GetBook(string name);
         bool BookExists(int id);
-        bool CreateBook(int categoryId, int statusId, Book book,
+        bool CreateBook(List<int> categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review);
 
-        bool UpdateBook(int categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review);
+        bool UpdateBook(List<int> categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review);
         bool DeleteBook(Book book);
         bool Save();
     }
