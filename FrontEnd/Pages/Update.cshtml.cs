@@ -29,6 +29,9 @@ namespace FrontEnd.Pages
         public int statusId { get; set; }
         public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
+        public List<int> selectedCategoryIds { get; set; }
+        [BindProperty]
+        public List<int> SelectedCategories { get; set; } = new List<int>();
 
         public Update(IHttpClientFactory clientFactory)
         {
@@ -85,19 +88,20 @@ namespace FrontEnd.Pages
 
                 if (!reviewResponse.IsSuccessStatusCode) return NotFound();
                 if(reviewResponse.ReasonPhrase == "No Content")
+                {
                     ReviewDto = new ReviewDto();
+                }
+
                 else
                 {
                     var review = await reviewResponse.Content.ReadFromJsonAsync<Review>();
-
                     if(review == null) return NotFound();
-
                     ReviewDto = new ReviewDto
                     {
                         Id = review.Id,
                         Text = review.Text,
                         Title = review.Title,
-                        Liked = review.Liked,
+                        Liked = review.Liked
                     };                  
                 }
 
@@ -108,6 +112,11 @@ namespace FrontEnd.Pages
                 // tüm kategoriler getirme
                 var categoryResponse = await client.GetStringAsync("http://localhost:5014/api/Category");
                 var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
+
+                var selectedCategoryResponse = await client.GetStringAsync($"http://localhost:5014/api/Category/category/{id}");
+                var selectedCategories = JsonConvert.DeserializeObject<List<CategoryDto>>(selectedCategoryResponse);
+
+                selectedCategoryIds =  selectedCategories.Select(c => c.Id).ToList();
 
                 // StatusOptions'ı doldur
                 StatusOptions = statuses?.Select(s => new SelectListItem
@@ -122,8 +131,7 @@ namespace FrontEnd.Pages
                 {
                     Value = c.Id.ToString(),
                     Text = c.Name,
-                    Selected = book.BookCategories?
-                                    .Any(bc => bc.CategoryId == c.Id) ?? false
+                    Selected = selectedCategoryIds.Contains(c.Id)
                 }).ToList() ?? new List<SelectListItem>();
 
                 // Mevcut durumu ve kategoriyi ayarlama
@@ -155,8 +163,10 @@ namespace FrontEnd.Pages
             // bookDto'yu JSON'a serileştirme
             var bookJson = JsonConvert.SerializeObject(bookDto);
             var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
+
+            var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
             // İstek URI'sini oluşturun
-            var requestUri = $"http://localhost:5014/api/Book/{id}?statusId={statusId}&catId={catId}" +
+            var requestUri = $"http://localhost:5014/api/Book/{id}?statusId={statusId}" + $"{categoryids}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
             try{// İstek gönderin

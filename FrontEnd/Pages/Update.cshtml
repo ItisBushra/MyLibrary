@@ -19,15 +19,20 @@
                                 <option value="statusId">Kitabın Durumunu Seç</option>
                             </select>
                         </div>
-                               <div class="form-group">
-                                @foreach(var cat in Model.CategoryOptions)
+                             <div class="form-group">
+                                <label>Kategoriler</label> <br>
+                                @for (int i = 0; i < Model.CategoryOptions.Count; i++)
                                 {
-                                    <label asp-for="catId">Katagori</label>
-                                    <select asp-for="catId" class="form-control" asp-items="Model.CategoryOptions">
-                                        <option value="catId">Kitabın Kategoresi Seç</option>
-                                    </select>
+                                   <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="category-@Model.CategoryOptions[i].Value"  name="SelectedCategories" value="@Model.CategoryOptions[i].Value" @(Model.SelectedCategories.Contains(int.Parse(Model.CategoryOptions[i].Value)) ? "checked" : "") />
+                                    <label class="form-check-label" for="category-@Model.CategoryOptions[i].Value">
+                                        @Model.CategoryOptions[i].Text
+                                    </label>
+                                </div>
                                 }
-                        </div>
+                                <span asp-validation-for="selectedCategoryIds" class="text-danger"></span>
+                            </div>
+
                          <div class="form-group">
                               <label asp-for="ReadingTrackingDto.StartDate"></label>
                               <input asp-for="ReadingTrackingDto.StartDate" class="form-control" type="date"/>

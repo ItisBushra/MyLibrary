@@ -11,6 +11,7 @@ namespace PersonalizedLibraryAPI.Repository.IRepository
         ICollection<Category> GetCategories();
         Category GetCategory(int id);
         ICollection<Book> GetBooksByCategory(int categoryId);
+        ICollection<Category> GetCategoriesByBook(int BookId);
 
         //makes validation a lot easier
         bool CategoryExists(int id);

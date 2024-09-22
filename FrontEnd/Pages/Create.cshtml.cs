@@ -21,7 +21,7 @@ namespace FrontEnd.Pages
         public BookDto BookDto { get; set; }
         [BindProperty]
         public ReviewDto ReviewDto { get; set; }
-        [BindProperty]
+        [BindProperty] 
         public ReadingTrackingDto ReadingTrackingDto { get; set; }
         [BindProperty]
         public int catId { get; set; }
@@ -29,6 +29,8 @@ namespace FrontEnd.Pages
         public int statusId { get; set; }
         public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
+        [BindProperty]
+        public List<int> SelectedCategories { get; set; } = new List<int>();
         public Create(IHttpClientFactory clientFactory)
         {
             _clientFactory = clientFactory;
@@ -68,7 +70,7 @@ namespace FrontEnd.Pages
                 return Page();
             }
 
-            var client = _clientFactory.CreateClient();
+             var client = _clientFactory.CreateClient();
             
                 // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
                 var bookDto = new BookDto{
@@ -78,8 +80,11 @@ namespace FrontEnd.Pages
                 // bookDto'yu JSON'a serileştirme
                 var bookJson = JsonConvert.SerializeObject(bookDto);
                 var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
+                
+                var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
+
                 // İstek URI'sini oluşturun
-                var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}&catId={catId}" +
+                var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}" + $"{categoryids}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
                 try{
@@ -98,5 +103,5 @@ namespace FrontEnd.Pages
                 }
                 return Page();
         }
-      }
     }
+}

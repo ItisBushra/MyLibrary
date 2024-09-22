@@ -68,5 +68,19 @@ namespace PersonalizedLibraryAPI.Controllers
 
             return Ok(books);
         }
+
+        [HttpGet("category/{bookId}")]
+        [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
+        [ProducesResponseType(400)]
+        public IActionResult GetCategoryByBookId(int bookId)
+        {
+            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategoriesByBook(bookId));
+
+            //validation
+            if(!ModelState.IsValid)
+               return BadRequest();
+
+            return Ok(categories);
+        }
     }
 }
