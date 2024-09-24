@@ -27,10 +27,6 @@
                                             id="category-@Model.CategoryOptions[i].Value" 
                                             name="SelectedCategories" 
                                             value="@Model.CategoryOptions[i].Value" />
-                                             @if (Model.SelectedCategories.Contains(int.Parse(Model.CategoryOptions[i].Value))) 
-                                            { 
-                                                <text>checked</text> 
-                                            }
                                             <label class="form-check-label" for="category-@Model.CategoryOptions[i].Value">
                                             @Model.CategoryOptions[i].Text
                                         </label>

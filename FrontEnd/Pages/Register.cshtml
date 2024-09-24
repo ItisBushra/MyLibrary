@@ -1,0 +1,52 @@
+@page
+@model FrontEnd.Pages.Register
+@{
+    ViewData["Title"] = "Kayıt Olma";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div class="container">
+    <div class="row ">
+      <div class="form-container">
+<ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">
+  <li class="nav-item" role="presentation">
+    <a asp-page="/Login" class="nav-link" aria-disabled="false" aria-selected="true">Giriş Yap</a>
+  </li>
+  <li class="nav-item" role="presentation">
+    <a class="nav-link active"id="tab-register"aria-selected="false">Kayıt Ol</a>
+  </li>
+</ul>
+</div>
+            <div class="col-md-12 mb-3">
+                <div class="card text-dark">
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="pills-Register" role="tabpanel" aria-labelledby="tab-Register">
+    <form>
+      <div class="form-outline mb-4">
+        <label class="form-label" for="registerUsername">Kullanıcı Adı</label>
+        <input type="text" id="registerUsername" class="form-control" />
+      </div>
+
+      <div class="form-outline mb-4">
+        <label class="form-label" for="registerEmail">E-posta</label>
+        <input type="email" id="registerEmail" class="form-control" />
+      </div>
+
+      <div class="form-outline mb-4">
+        <label class="form-label" for="registerPassword">Şifre</label>
+        <input type="password" id="registerPassword" class="form-control" />
+      </div>
+
+      <div class="form-outline mb-4">
+        <label class="form-label" for="registerRepeatPassword">Şifreyi Tekrar Girin</label>
+        <input type="password" id="registerRepeatPassword" class="form-control" />
+      </div>
+      <button type="submit" class="acc-button">Kayıt Ol</button>
+    </form>
+  </div>
+</div>
+    </div>
+</div> 
+</div>
+

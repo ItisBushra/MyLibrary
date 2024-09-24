@@ -93,7 +93,7 @@
 button
 {
     padding: 1rem;
-    width: 40%;
+    width: 30%;
     background-color: #B8001F;
     border-radius:3.125rem ;
 }
@@ -103,3 +103,24 @@ form
     margin:1rem;
 }
 /*create page end*/
+
+/*Login & Registration page start*/
+.form-container
+{
+    position: relative;
+    padding: 5rem 3rem 0 3rem;
+}
+.nav-pills .nav-link.active
+{
+    background-color:#B8001F !important;
+}
+a.nav-link
+{
+    color: #B8001F;
+}
+.btn-block
+{
+    display: block;
+}
+/*Login & Registration page end*/
+

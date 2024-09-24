@@ -69,39 +69,37 @@ namespace FrontEnd.Pages
                 await OnGetAsync();
                 return Page();
             }
-
              var client = _clientFactory.CreateClient();
             
-                // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
-                var bookDto = new BookDto{
-                    Name = BookDto.Name,
-                    WritersName = BookDto.WritersName
-                };
-                // bookDto'yu JSON'a serileştirme
-                var bookJson = JsonConvert.SerializeObject(bookDto);
-                var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
+            // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
+            var bookDto = new BookDto{
+                Name = BookDto.Name,
+                WritersName = BookDto.WritersName
+            };
+            // bookDto'yu JSON'a serileştirme
+            var bookJson = JsonConvert.SerializeObject(bookDto);
+            var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
                 
-                var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
+            var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
 
-                // İstek URI'sini oluşturun
-                var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}" + $"{categoryids}" +
-                                $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
-                                $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
-                try{
-                    // İstek gönderin
-                    var response = await client.PostAsync(requestUri, content);
+            // İstek URI'sini oluşturun
+            var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}"+$"{categoryids}"+
+            $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate
+            :MM-dd-yyyy}"+$"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
+            try{
+                // İstek gönderin
+                var response = await client.PostAsync(requestUri, content);
 
-                    if (response.IsSuccessStatusCode)  return RedirectToPage("Index");
-                    else
-                    {
-                        var errorResponse = await response.Content.ReadAsStringAsync();
-                        ModelState.AddModelError("", $"Hata: {errorResponse}");
-                    }
+                if (response.IsSuccessStatusCode)  return RedirectToPage("Index");
+                else{
+                    var errorResponse = await response.Content.ReadAsStringAsync();
+                    ModelState.AddModelError("", $"Hata: {errorResponse}");
                 }
-                catch (HttpRequestException ex){
-                    ModelState.AddModelError("", $"HTTP isteğin Hatası: {ex.Message}");
-                }
-                return Page();
+            }
+            catch (HttpRequestException ex){
+                ModelState.AddModelError("", $"HTTP isteğin Hatası: {ex.Message}");
+            }
+            return Page();
         }
     }
 }

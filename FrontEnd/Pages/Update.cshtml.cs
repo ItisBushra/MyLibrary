@@ -118,7 +118,7 @@ namespace FrontEnd.Pages
 
                 selectedCategoryIds =  selectedCategories.Select(c => c.Id).ToList();
 
-                // StatusOptions'ı doldur
+                // StatusOptions'ı doldurme
                 StatusOptions = statuses?.Select(s => new SelectListItem
                 {
                     Value = s.Id.ToString(),
@@ -126,7 +126,7 @@ namespace FrontEnd.Pages
                     Selected = s.Id == book.StatusId
                 }).ToList() ?? new List<SelectListItem>();
 
-                // CategoryOptions'ı doldur
+                // CategoryOptions'ı doldurme
                 CategoryOptions = categories?.Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
@@ -165,11 +165,11 @@ namespace FrontEnd.Pages
             var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 
             var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
-            // İstek URI'sini oluşturun
+            // İstek URI'sini oluşturme
             var requestUri = $"http://localhost:5014/api/Book/{id}?statusId={statusId}" + $"{categoryids}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
-            try{// İstek gönderin
+            try{// İstek gönderme
                 var response = await client.PutAsync(requestUri, content);
 
                 if (response.IsSuccessStatusCode)  return RedirectToPage("Index");

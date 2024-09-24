@@ -27,7 +27,10 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public ICollection<Category> GetCategoriesByBook(int bookId)
         {
-             return _dBContext.BookCategories.Where(c=> c.BookId == bookId).Select(b=>b.Category).ToList();           
+             return _dBContext.BookCategories.
+             Where(c=> c.BookId == bookId)
+             .Select(b=>b.Category)
+             .ToList();           
         }
 
         public ICollection<Category> GetCategories()

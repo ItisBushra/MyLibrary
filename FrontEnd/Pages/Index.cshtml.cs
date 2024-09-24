@@ -31,36 +31,33 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var client = _clientFactory.CreateClient();
-        try
-        {
+        try{
             var response = await client.GetAsync("http://localhost:5014/api/Book/GetAll");
             if(!response.IsSuccessStatusCode) return NotFound();
             var booksJson = await response.Content.ReadAsStringAsync();
 
             var receivedBooks = JsonConvert.DeserializeObject<List<BookDetailsDto>>(booksJson);
             Books = new List<BookDetailsDto>();
-
             if (receivedBooks != null)
             {
                 foreach(var receivedBook in receivedBooks)
                 {
                     var bookDetailsDto = new BookDetailsDto
                     {
-                        Book = new BookDto
-                        {
+                        Book = new BookDto{
                             Id = receivedBook.Book.Id,
                             Name = receivedBook.Book.Name,
                             WritersName = receivedBook.Book.WritersName
                         },
-                        Review = receivedBook.Review != null ? new ReviewDto
-                        {
+                        
+                        Review = receivedBook.Review != null ? new ReviewDto{
                             Id = receivedBook.Review.Id,
                             Title = receivedBook.Review.Title,
                             Text = receivedBook.Review.Text,
                             Liked = receivedBook.Review.Liked,
                         } : null,
-                        ReadingTracking = receivedBook.ReadingTracking != null ? new ReadingTrackingDto
-                        {
+                        
+                        ReadingTracking = receivedBook.ReadingTracking != null ? new ReadingTrackingDto{
                             Id = receivedBook.ReadingTracking.Id,
                             StartDate = receivedBook.ReadingTracking.StartDate,
                             EndDate = receivedBook.ReadingTracking.EndDate,
@@ -70,20 +67,19 @@ public class IndexModel : PageModel
                     };
                     Books.Add(bookDetailsDto);
                 }
-
             }
             var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");
                 var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
-                StatusOptions = statuses?.Select(s => new SelectListItem
-                {
+                
+                StatusOptions = statuses?.Select(s => new SelectListItem{
                     Value = s.Id.ToString(),
                     Text = s.Name
                 }).ToList() ?? new List<SelectListItem>();
 
                 var categoryResponse = await client.GetStringAsync("http://localhost:5014/api/Category");
                 var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
-                CategoryOptions = categories?.Select(c => new SelectListItem
-                {
+                
+                CategoryOptions = categories?.Select(c => new SelectListItem{
                     Value = c.Id.ToString(),
                     Text = c.Name
                 }).ToList() ?? new List<SelectListItem>();
@@ -93,10 +89,9 @@ public class IndexModel : PageModel
         catch (Exception)
         {
             return StatusCode(500, "İstek işlenirken bir hata oluştu.");
-        }
+        } 
     }
 
-    [HttpDelete("{id}")]
     public async Task<IActionResult> OnDeleteAsync(int id)
     {
         if (!ModelState.IsValid || id == null){

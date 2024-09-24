@@ -74,7 +74,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetCategoryByBookId(int bookId)
         {
-            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategoriesByBook(bookId));
+            var categories = _mapper.Map<List<CategoryDto>>
+            (_categoryRepository.GetCategoriesByBook(bookId));
 
             //validation
             if(!ModelState.IsValid)

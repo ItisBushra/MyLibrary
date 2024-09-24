@@ -19,12 +19,7 @@ namespace PersonalizedLibraryAPI.Helper
             CreateMap<ReadingTracking, ReadingTrackingDto>().ReverseMap();
 
             CreateMap<Book, BookDetailsDto>()
-            .ForMember(dest => dest.Book, opt => opt.MapFrom(src => new BookDto 
-            {
-                Id = src.Id,
-                Name = src.Name,
-                WritersName = src.WritersName,
-            }))
+            .ForMember(dest => dest.Book, opt => opt.MapFrom(src => src))
             .ForMember(dest => dest.Review, opt => opt.MapFrom(src => src.Review))
             .ForMember(dest => dest.ReadingTracking, opt => opt.MapFrom(src => src.ReadingTracking))
             .ForMember(dest => dest.BookCategories, opt => opt.MapFrom(src => src.BookCategories))
