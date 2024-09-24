@@ -108,6 +108,16 @@ namespace FrontEnd.Pages
                 // tüm durumler getirme
                 var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");
                 var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
+                
+                var selectedStatusResponse = await client.GetStringAsync($"http://localhost:5014/books/{id}");
+                var selectedStatusId = JsonConvert.DeserializeObject<StatusDto>(selectedStatusResponse);
+
+                 // StatusOptions'ı doldurme
+                StatusOptions = statuses?.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList() ?? new List<SelectListItem>();
 
                 // tüm kategoriler getirme
                 var categoryResponse = await client.GetStringAsync("http://localhost:5014/api/Category");
@@ -116,28 +126,17 @@ namespace FrontEnd.Pages
                 var selectedCategoryResponse = await client.GetStringAsync($"http://localhost:5014/api/Category/category/{id}");
                 var selectedCategories = JsonConvert.DeserializeObject<List<CategoryDto>>(selectedCategoryResponse);
 
-                selectedCategoryIds =  selectedCategories.Select(c => c.Id).ToList();
-
-                // StatusOptions'ı doldurme
-                StatusOptions = statuses?.Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.Name,
-                    Selected = s.Id == book.StatusId
-                }).ToList() ?? new List<SelectListItem>();
-
+                SelectedCategories = selectedCategories.Select(c => c.Id).ToList();
                 // CategoryOptions'ı doldurme
                 CategoryOptions = categories?.Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
                     Text = c.Name,
-                    Selected = selectedCategoryIds.Contains(c.Id)
+                    Selected = SelectedCategories.Contains(c.Id)
                 }).ToList() ?? new List<SelectListItem>();
 
                 // Mevcut durumu ve kategoriyi ayarlama
-                statusId = book.StatusId;
-                catId = book.BookCategories?
-                            .FirstOrDefault()?.CategoryId ?? 0;
+                statusId = selectedStatusId.Id;
 
                 return Page();
             }

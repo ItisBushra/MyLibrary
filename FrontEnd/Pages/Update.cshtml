@@ -16,7 +16,7 @@
                          <div class="form-group">
                                  <label asp-for="statusId">Durum</label>
                             <select asp-for="statusId" class="form-control" asp-items="Model.StatusOptions">
-                                <option value="statusId">Kitabın Durumunu Seç</option>
+                                <option value="statusId"></option>
                             </select>
                         </div>
                              <div class="form-group">
@@ -24,7 +24,7 @@
                                 @for (int i = 0; i < Model.CategoryOptions.Count; i++)
                                 {
                                    <div class="form-check">
-                                    <input type="checkbox" class="form-check-input" id="category-@Model.CategoryOptions[i].Value"  name="SelectedCategories" value="@Model.CategoryOptions[i].Value" @(Model.SelectedCategories.Contains(int.Parse(Model.CategoryOptions[i].Value)) ? "checked" : "") />
+                                     <input type="checkbox" class="form-check-input" id="category-@Model.CategoryOptions[i].Value"  name="SelectedCategories" value="@Model.CategoryOptions[i].Value" @(Model.SelectedCategories.Contains(int.Parse(Model.CategoryOptions[i].Value)) ? "checked" : "") />
                                     <label class="form-check-label" for="category-@Model.CategoryOptions[i].Value">
                                         @Model.CategoryOptions[i].Text
                                     </label>
