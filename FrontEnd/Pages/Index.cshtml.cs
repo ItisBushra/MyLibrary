@@ -17,10 +17,6 @@ public class IndexModel : PageModel
 {
     private readonly IHttpClientFactory  _clientFactory;
     public List<BookDetailsDto> Books { get; set; } = new List<BookDetailsDto>();
-    [BindProperty]
-    public int catId { get; set; }
-    [BindProperty]
-    public int statusId { get; set; }
     public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
     public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
     public IndexModel(IHttpClientFactory  clientFactory)
@@ -36,53 +32,23 @@ public class IndexModel : PageModel
             if(!response.IsSuccessStatusCode) return NotFound();
             var booksJson = await response.Content.ReadAsStringAsync();
 
-            var receivedBooks = JsonConvert.DeserializeObject<List<BookDetailsDto>>(booksJson);
-            Books = new List<BookDetailsDto>();
-            if (receivedBooks != null)
-            {
-                foreach(var receivedBook in receivedBooks)
-                {
-                    var bookDetailsDto = new BookDetailsDto
-                    {
-                        Book = new BookDto{
-                            Id = receivedBook.Book.Id,
-                            Name = receivedBook.Book.Name,
-                            WritersName = receivedBook.Book.WritersName
-                        },
-                        
-                        Review = receivedBook.Review != null ? new ReviewDto{
-                            Id = receivedBook.Review.Id,
-                            Title = receivedBook.Review.Title,
-                            Text = receivedBook.Review.Text,
-                            Liked = receivedBook.Review.Liked,
-                        } : null,
-                        
-                        ReadingTracking = receivedBook.ReadingTracking != null ? new ReadingTrackingDto{
-                            Id = receivedBook.ReadingTracking.Id,
-                            StartDate = receivedBook.ReadingTracking.StartDate,
-                            EndDate = receivedBook.ReadingTracking.EndDate,
-                        } : null,
-                        BookCategories = receivedBook.BookCategories,
-                        Status = receivedBook.Status
-                    };
-                    Books.Add(bookDetailsDto);
-                }
-            }
+            Books = JsonConvert.DeserializeObject<List<BookDetailsDto>>(booksJson) ?? new List<BookDetailsDto>();
+            
             var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
-                var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
+            var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
                 
-                StatusOptions = statuses?.Select(s => new SelectListItem{
-                    Value = s.Id.ToString(),
-                    Text = s.Name
-                }).ToList() ?? new List<SelectListItem>();
+            StatusOptions = statuses?.Select(s => new SelectListItem{
+                Value = s.Id.ToString(),
+                Text = s.Name
+            }).ToList() ?? new List<SelectListItem>();
 
-                var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
-                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
+            var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
+            var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
                 
-                CategoryOptions = categories?.Select(c => new SelectListItem{
-                    Value = c.Id.ToString(),
-                    Text = c.Name
-                }).ToList() ?? new List<SelectListItem>();
+            CategoryOptions = categories?.Select(c => new SelectListItem{
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList() ?? new List<SelectListItem>();
 
             return Page();
         }

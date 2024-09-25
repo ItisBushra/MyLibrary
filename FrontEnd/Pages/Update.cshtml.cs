@@ -143,15 +143,9 @@ namespace FrontEnd.Pages
                 return Page();
             }
             var client = _clientFactory.CreateClient();
-            
-            // Gerekli tüm verileri içeren yeni bir BookDto oluşturun
-            var bookDto = new BookDto{
-                Id = id,
-                Name = BookDto.Name,
-                WritersName = BookDto.WritersName
-                };
+        
             // bookDto'yu JSON'a serileştirme
-            var bookJson = JsonConvert.SerializeObject(bookDto);
+            var bookJson =  JsonConvert.SerializeObject(BookDto);
             var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 
             var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
