@@ -5,6 +5,13 @@
     font-family: "Caveat", cursive;
 }
 /*index page start*/
+h1.log-text
+{
+    text-align: center;
+    line-height: 1.5;
+    font-size: 3rem;
+    padding-top: 1rem;
+}
 .bi-trash3
 {
     color: red;
@@ -93,7 +100,7 @@
 button
 {
     padding: 1rem;
-    width: 30%;
+    width: 15%;
     background-color: #B8001F;
     border-radius:3.125rem ;
 }
@@ -117,10 +124,6 @@ form
 a.nav-link
 {
     color: #B8001F;
-}
-.btn-block
-{
-    display: block;
 }
 /*Login & Registration page end*/
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using PersonalizedLibraryAPI.DTOs;
+using PersonalizedLibraryAPI.DTOs.Account;
 using PersonalizedLibraryAPI.Models;
 
 namespace PersonalizedLibraryAPI.Helper
@@ -29,6 +30,8 @@ namespace PersonalizedLibraryAPI.Helper
             CreateMap<BookCategory, CategoryDto>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Category.Id))
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Category.Name));
+
+            CreateMap<AppUser, RegisterDto>().ReverseMap();
         }
     }
 }

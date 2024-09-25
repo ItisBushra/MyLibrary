@@ -1,9 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using PersonalizedLibraryAPI.Data;
+using Microsoft.AspNetCore.Identity;
 using PersonalizedLibraryAPI.Repository;
 using PersonalizedLibraryAPI.Repository.IRepository;
+using PersonalizedLibraryAPI.Data;
+using PersonalizedLibraryAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+//Adding identity
+builder.Services.AddIdentity<AppUser, IdentityRole>()
+    .AddEntityFrameworkStores<DBContext>();
 
 // Add services to the container.
 builder.Services.AddRazorPages();

@@ -24,8 +24,6 @@ namespace FrontEnd.Pages
         [BindProperty]
         public ReadingTrackingDto ReadingTrackingDto { get; set; }
         [BindProperty]
-        public int catId { get; set; }
-        [BindProperty]
         public int statusId { get; set; }
         public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
         public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
@@ -40,14 +38,12 @@ namespace FrontEnd.Pages
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null)
-                return NotFound();
-
+            if (id == null) return NotFound();
             var client = _clientFactory.CreateClient();
 
             try{
                 //Book getirme
-                var bookResponse = await client.GetAsync($"http://localhost:5014/api/Book/{id}");
+                var bookResponse = await client.GetAsync($"https://localhost:5014/api/Book/{id}");
                 if (!bookResponse.IsSuccessStatusCode) return NotFound();
                     
                 var book = await bookResponse.Content.ReadFromJsonAsync<Book>();
@@ -63,7 +59,7 @@ namespace FrontEnd.Pages
 
                 // ReadingTracking getirme
                 var readingTrackingResponse = await client.GetAsync
-                        ($"http://localhost:5014/api/ReadingTracking/readingTracking/{id}");
+                        ($"https://localhost:5014/api/ReadingTracking/readingTracking/{id}");
 
                 if (!readingTrackingResponse.IsSuccessStatusCode) return NotFound();
                 if(readingTrackingResponse.ReasonPhrase == "No Content") 
@@ -79,19 +75,14 @@ namespace FrontEnd.Pages
                         StartDate = readingTracking.StartDate,
                         EndDate = readingTracking.EndDate
                     };
-                
                 }
 
                 //Review getirme
                 var reviewResponse = await client.GetAsync
-                                    ($"http://localhost:5014/api/Review/review/{id}");
+                                    ($"https://localhost:5014/api/Review/review/{id}");
 
                 if (!reviewResponse.IsSuccessStatusCode) return NotFound();
-                if(reviewResponse.ReasonPhrase == "No Content")
-                {
-                    ReviewDto = new ReviewDto();
-                }
-
+                if(reviewResponse.ReasonPhrase == "No Content")  ReviewDto = new ReviewDto();
                 else
                 {
                     var review = await reviewResponse.Content.ReadFromJsonAsync<Review>();
@@ -106,10 +97,10 @@ namespace FrontEnd.Pages
                 }
 
                 // tüm durumler getirme
-                var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");
+                var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
                 var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
                 
-                var selectedStatusResponse = await client.GetStringAsync($"http://localhost:5014/books/{id}");
+                var selectedStatusResponse = await client.GetStringAsync($"https://localhost:5014/books/{id}");
                 var selectedStatusId = JsonConvert.DeserializeObject<StatusDto>(selectedStatusResponse);
 
                  // StatusOptions'ı doldurme
@@ -120,22 +111,22 @@ namespace FrontEnd.Pages
                 }).ToList() ?? new List<SelectListItem>();
 
                 // tüm kategoriler getirme
-                var categoryResponse = await client.GetStringAsync("http://localhost:5014/api/Category");
+                var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
                 var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
 
-                var selectedCategoryResponse = await client.GetStringAsync($"http://localhost:5014/api/Category/category/{id}");
+                var selectedCategoryResponse = await client.GetStringAsync($"https://localhost:5014/api/Category/category/{id}");
                 var selectedCategories = JsonConvert.DeserializeObject<List<CategoryDto>>(selectedCategoryResponse);
 
                 SelectedCategories = selectedCategories.Select(c => c.Id).ToList();
                 // CategoryOptions'ı doldurme
                 CategoryOptions = categories?.Select(c => new SelectListItem
                 {
-                    Value = c.Id.ToString(),
+                    Value = c.Id.ToString(), 
                     Text = c.Name,
                     Selected = SelectedCategories.Contains(c.Id)
                 }).ToList() ?? new List<SelectListItem>();
 
-                // Mevcut durumu ve kategoriyi ayarlama
+                // Mevcut durumu ayarlama
                 statusId = selectedStatusId.Id;
 
                 return Page();
@@ -165,7 +156,7 @@ namespace FrontEnd.Pages
 
             var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
             // İstek URI'sini oluşturme
-            var requestUri = $"http://localhost:5014/api/Book/{id}?statusId={statusId}" + $"{categoryids}" +
+            var requestUri = $"https://localhost:5014/api/Book/{id}?statusId={statusId}" + $"{categoryids}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
                                 $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
             try{// İstek gönderme

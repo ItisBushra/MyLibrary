@@ -40,11 +40,11 @@ namespace FrontEnd.Pages
         {
             // API'den durumları getirin
             var client = _clientFactory.CreateClient();
-            var response1 = await client.GetStringAsync("http://localhost:5014/api/Status");
+            var response1 = await client.GetStringAsync("https://localhost:5014/api/Status");
             var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(response1);
 
             //kategorileri getirme
-            var response2 = await client.GetStringAsync("http://localhost:5014/api/Category");
+            var response2 = await client.GetStringAsync("https://localhost:5014/api/Category");
             var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response2);
 
             // StatusOptions'ı Doldur
@@ -83,7 +83,7 @@ namespace FrontEnd.Pages
             var categoryids = string.Join("", SelectedCategories.Select(catId => $"&catId={catId}"));
 
             // İstek URI'sini oluşturun
-            var requestUri = $"http://localhost:5014/api/Book?statusId={statusId}"+$"{categoryids}"+
+            var requestUri = $"https://localhost:5014/api/Book?statusId={statusId}"+$"{categoryids}"+
             $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate
             :MM-dd-yyyy}"+$"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
             try{

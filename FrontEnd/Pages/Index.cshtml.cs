@@ -32,7 +32,7 @@ public class IndexModel : PageModel
     {
         var client = _clientFactory.CreateClient();
         try{
-            var response = await client.GetAsync("http://localhost:5014/api/Book/GetAll");
+            var response = await client.GetAsync("https://localhost:5014/api/Book/GetAll");
             if(!response.IsSuccessStatusCode) return NotFound();
             var booksJson = await response.Content.ReadAsStringAsync();
 
@@ -68,7 +68,7 @@ public class IndexModel : PageModel
                     Books.Add(bookDetailsDto);
                 }
             }
-            var statusResponse = await client.GetStringAsync("http://localhost:5014/api/Status");
+            var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
                 var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
                 
                 StatusOptions = statuses?.Select(s => new SelectListItem{
@@ -76,7 +76,7 @@ public class IndexModel : PageModel
                     Text = s.Name
                 }).ToList() ?? new List<SelectListItem>();
 
-                var categoryResponse = await client.GetStringAsync("http://localhost:5014/api/Category");
+                var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
                 var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
                 
                 CategoryOptions = categories?.Select(c => new SelectListItem{
@@ -101,7 +101,7 @@ public class IndexModel : PageModel
         var client = _clientFactory.CreateClient();
         try
         {
-            var response = await client.DeleteAsync($"http://localhost:5014/api/Book/{id}");
+            var response = await client.DeleteAsync($"https://localhost:5014/api/Book/{id}");
             
             if (!response.IsSuccessStatusCode)return NotFound();
             return new JsonResult(new { success = true });
