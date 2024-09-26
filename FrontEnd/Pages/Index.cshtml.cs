@@ -6,11 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering; 
 using Microsoft.AspNetCore.Mvc;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration; 
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PersonalizedLibraryAPI.Models;
+using PersonalizedLibraryAPI.DTOs.Account;
 using PersonalizedLibraryAPI.DTOs;
 namespace FrontEnd.Pages;
 
@@ -18,6 +20,8 @@ public class IndexModel : PageModel
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory  _clientFactory;
+    [BindProperty]
+    public LoginDto LoginDto { get; set; }
     public List<BookDetailsDto> Books { get; set; } = new List<BookDetailsDto>();
     public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
     public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
@@ -94,5 +98,30 @@ public class IndexModel : PageModel
         {
             return StatusCode(500, "istek başarısız oldu: " + ex.Message);
         }
+    }
+
+    public async Task<IActionResult> OnPostLogout()
+    {
+        var client = _clientFactory.CreateClient();
+        var token = Request.Cookies["AuthToken"];
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["AuthToken"]);
+        try
+        {
+            var logoutUri = await client.PostAsync
+                           ("https://localhost:5014/api/Account/logout", null);
+            if (logoutUri.IsSuccessStatusCode)
+            {
+                Response.Cookies.Delete("AuthToken");
+                return RedirectToPage("Index");
+            } 
+            else{
+                var errorResponse = await logoutUri.Content.ReadAsStringAsync();
+                ModelState.AddModelError("", $"Hata: {errorResponse}");
+            }
+        }
+        catch (HttpRequestException ex){
+                ModelState.AddModelError("", $"HTTP isteğin Hatası: {ex.Message}");
+        }
+        return Page();
     }
 }

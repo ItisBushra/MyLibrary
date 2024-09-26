@@ -36,10 +36,10 @@
                                @if(HttpContextAccessor.HttpContext.Request.Cookies.ContainsKey("AuthToken")) 
                                 {
                                     <li class="nav-item">
-                                  <strong>
-                                    <a class="nav-link text-dark" asp-area="">Çıkış Yap</a>
-                                  </strong>
-                                    </li>
+                                    <form asp- asp-page-handler="Logout" method="post">
+                                        <button type="submit" class="nav-link text-dark" style="border: none; background: none;">Çıkış Yap</button>
+                                    </form>
+                                </li>
                                 }
                         </li>
                           </ul>

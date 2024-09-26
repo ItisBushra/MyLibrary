@@ -105,5 +105,16 @@ namespace PersonalizedLibraryAPI.Controllers
                 return Unauthorized(new { IsValid = false, Message = ex.Message });
             }
         }
+
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            await _signInManager.SignOutAsync();
+
+            return Ok("başarıyla çıkış yapıldı");
+        }
     }
 }
