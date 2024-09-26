@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,16 +31,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                                @if(User.Identity.IsAuthenticated)
+                      </ul>
+                    <ul class="navbar-nav">
+                               @if(HttpContextAccessor.HttpContext.Request.Cookies.ContainsKey("AuthToken")) 
                                 {
                                     <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-page="/Logout">Logout</a>
+                                  <strong>
+                                    <a class="nav-link text-dark" asp-area="">Çıkış Yap</a>
+                                  </strong>
                                     </li>
                                 }
-                                                    
                         </li>
-                          
-                    </ul>
+                          </ul>
                 </div>
             </div>
         </nav>

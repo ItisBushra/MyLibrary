@@ -5,6 +5,10 @@
     font-family: "Caveat", cursive;
 }
 /*index page start*/
+.message-container
+{
+    padding: 1rem 5rem;
+}
 h1.log-text
 {
     text-align: center;

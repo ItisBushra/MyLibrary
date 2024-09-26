@@ -8,12 +8,12 @@ namespace PersonalizedLibraryAPI.DTOs.Account
 {
     public class RegisterDto
     {
-        [Required]
+        [Required (ErrorMessage = "Bu alanı zorunludur." )]
         public string? Username { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Bu alanı zorunludur." )]
         [EmailAddress]
         public string? Email { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Bu alanı zorunludur." )]
         public string? Password { get; set; }
     }
 }

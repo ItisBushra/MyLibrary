@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration; 
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PersonalizedLibraryAPI.Models;
@@ -15,41 +16,56 @@ namespace FrontEnd.Pages;
 
 public class IndexModel : PageModel
 {
+    private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory  _clientFactory;
     public List<BookDetailsDto> Books { get; set; } = new List<BookDetailsDto>();
     public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
     public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
-    public IndexModel(IHttpClientFactory  clientFactory)
+    public bool IsAuthenticated { get; set; }
+    public IndexModel(IHttpClientFactory  clientFactory,
+                        IConfiguration configuration)
     {
         _clientFactory = clientFactory;
+        _configuration = configuration;
     }
 
     public async Task<IActionResult> OnGetAsync()
     {
         var client = _clientFactory.CreateClient();
         try{
-            var response = await client.GetAsync("https://localhost:5014/api/Book/GetAll");
-            if(!response.IsSuccessStatusCode) return NotFound();
-            var booksJson = await response.Content.ReadAsStringAsync();
-
-            Books = JsonConvert.DeserializeObject<List<BookDetailsDto>>(booksJson) ?? new List<BookDetailsDto>();
-            
-            var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
-            var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
+            var token = Request.Cookies["AuthToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                Response.Cookies.Delete("AuthToken");
+                IsAuthenticated = false;
+            }
+            else
+            {
+                IsAuthenticated = true;
+                TempData["SuccessMessage"] = "Girişiniz başarılı oldu!";
                 
-            StatusOptions = statuses?.Select(s => new SelectListItem{
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList() ?? new List<SelectListItem>();
+                var response = await client.GetAsync("https://localhost:5014/api/Book/GetAll");
+                if(!response.IsSuccessStatusCode) return NotFound();
+                var booksJson = await response.Content.ReadAsStringAsync();
 
-            var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
-            var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
-                
-            CategoryOptions = categories?.Select(c => new SelectListItem{
-                Value = c.Id.ToString(),
-                Text = c.Name
-            }).ToList() ?? new List<SelectListItem>();
+                Books = JsonConvert.DeserializeObject<List<BookDetailsDto>>(booksJson) ?? new List<BookDetailsDto>();
+                    
+                var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
+                var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
+                        
+                StatusOptions = statuses?.Select(s => new SelectListItem{
+                        Value = s.Id.ToString(),
+                        Text = s.Name
+                }).ToList() ?? new List<SelectListItem>();
 
+                var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
+                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
+                        
+                CategoryOptions = categories?.Select(c => new SelectListItem{
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }).ToList() ?? new List<SelectListItem>();
+            }
             return Page();
         }
         catch (Exception)
@@ -69,9 +85,7 @@ public class IndexModel : PageModel
         {
             var response = await client.DeleteAsync($"https://localhost:5014/api/Book/{id}");
             
-            if (!response.IsSuccessStatusCode)return NotFound();
-            return new JsonResult(new { success = true });
-            
+            if (!response.IsSuccessStatusCode)return NotFound();          
             
             await OnGetAsync();
             return new JsonResult(new { success = true }); // Return success message

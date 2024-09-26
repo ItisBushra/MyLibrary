@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PersonalizedLibraryAPI.DTOs.Account;
 using PersonalizedLibraryAPI.Repository.IRepository;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PersonalizedLibraryAPI.Controllers
 {
@@ -84,6 +85,25 @@ namespace PersonalizedLibraryAPI.Controllers
                     Token = _tokenServiceRepository.CreateToken(user)
                 }
             );
+        }
+
+        [HttpPost("validate-token")]
+        public IActionResult ValidateToken([FromBody] string token)
+        {
+            try
+            {
+                var principal = _tokenServiceRepository.ValidateToken(token);
+                return Ok(new
+                {
+                    IsValid = true,
+                    Email = principal.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                    Username = principal.FindFirst(JwtRegisteredClaimNames.GivenName)?.Value
+                });
+            }
+            catch (Exception ex)
+            {
+                return Unauthorized(new { IsValid = false, Message = ex.Message });
+            }
         }
     }
 }

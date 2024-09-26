@@ -6,12 +6,9 @@
 }
 @Html.AntiForgeryToken()
 <div class="container">
-    <p>@User.Identity.Name</p>
-@****  @if(!User.Identity.IsAuthenticated)
+    @if(!Model.IsAuthenticated)
         { 
-
         <div class="row">
-
             <h1 class="log-text">
                 <strong>
                 Personalized Library'ye hoş geldiniz! <br> Kitaplarınızı görmek için lütfen <a class="nav-link" asp-page="/Login">giriş yapın.</a>
@@ -19,9 +16,25 @@
                 </strong>
             </h1>
         </div>
-        } 
+        }     
         else
-        {    ***@
+        {    
+    <div class="message-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    </div>
+
             <div class="createNav">
                 <a asp-page="/Create"><i class="bi bi-plus-circle"></i></a>
             </div>
@@ -83,5 +96,5 @@
                     </div>                                
                     }
             </div>
-        @**}**@
+        }
 </div>

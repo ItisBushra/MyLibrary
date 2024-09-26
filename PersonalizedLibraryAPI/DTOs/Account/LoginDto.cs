@@ -8,9 +8,9 @@ namespace PersonalizedLibraryAPI.DTOs.Account
 {
     public class LoginDto
     {
-        [Required]
+        [Required (ErrorMessage = "Bu alanı zorunludur." )]
         public string UserName { get; set; }
-        [Required]
+        [Required (ErrorMessage = "Bu alanı zorunludur." )]
         public string Password { get; set; }
     }
 }

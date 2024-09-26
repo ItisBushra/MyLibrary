@@ -14,7 +14,6 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
 // Add services to the container.
 builder.Services.AddRazorPages();
 
-
 // Add DbContext from the API project
 builder.Services.AddDbContext<PersonalizedLibraryAPI.Data.DBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

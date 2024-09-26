@@ -144,7 +144,7 @@ namespace FrontEnd.Pages
             }
             var client = _clientFactory.CreateClient();
         
-            // bookDto'yu JSON'a serileştirme
+            // BookDto'yu JSON'a serileştirme
             var bookJson =  JsonConvert.SerializeObject(BookDto);
             var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
 

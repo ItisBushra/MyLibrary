@@ -40,5 +40,31 @@ namespace PersonalizedLibraryAPI.Repository
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
+
+        public ClaimsPrincipal ValidateToken(string token)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var validationParameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _configuration["JWT:Issuer"],
+                ValidAudience = _configuration["JWT:Audience"],
+                IssuerSigningKey = _key
+            };
+
+            try
+            {
+                // Validate the token
+                var principal = tokenHandler.ValidateToken(token, validationParameters, out SecurityToken validatedToken);
+                return principal;
+            }
+            catch (SecurityTokenException ex)
+            {
+                throw new Exception($"{ex.Message}");
+            }
+        }
     }
 }
