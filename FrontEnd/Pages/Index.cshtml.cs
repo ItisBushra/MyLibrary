@@ -94,18 +94,28 @@ public class IndexModel : SharedBasePage
             return Page();
         }
         var client = _clientFactory.CreateClient();
-        try
+        var token = Request.Cookies["AuthToken"];
+        if (string.IsNullOrEmpty(token))
         {
-            var response = await client.DeleteAsync($"https://localhost:5014/api/Book/{id}");
-            
-            if (!response.IsSuccessStatusCode)return NotFound();          
-            
-            await OnGetAsync();
-            return new JsonResult(new { success = true }); // Return success message
+            Response.Cookies.Delete("AuthToken");
+            IsAuthenticated = false;
+            return RedirectToPage("Login");
         }
-        catch (Exception ex)
+        else
         {
-            return StatusCode(500, "istek başarısız oldu: " + ex.Message);
+            try
+            {
+                var response = await client.DeleteAsync($"https://localhost:5014/api/Book/{id}");
+                
+                if (!response.IsSuccessStatusCode)return NotFound();          
+                
+                await OnGetAsync();
+                return new JsonResult(new { success = true }); // Return success message
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "istek başarısız oldu: " + ex.Message);
+            }
         }
     }
 

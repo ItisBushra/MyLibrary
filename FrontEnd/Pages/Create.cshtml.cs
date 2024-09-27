@@ -13,7 +13,6 @@ using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.DTOs;
 using PersonalizedLibraryAPI.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 
 namespace FrontEnd.Pages
 {
@@ -53,7 +52,7 @@ namespace FrontEnd.Pages
             {
                 Response.Cookies.Delete("AuthToken");
                 IsAuthenticated = false;
-                return Page();
+                return RedirectToPage("Login");
             }
             else
             {
