@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering; 
 using Microsoft.AspNetCore.Mvc;
@@ -47,8 +48,10 @@ public class IndexModel : PageModel
             {
                 IsAuthenticated = true;
                 TempData["SuccessMessage"] = "Girişiniz başarılı oldu!";
+
+                var userEmail = GetEmailFromToken(token);
                 
-                var response = await client.GetAsync("https://localhost:5014/api/Book/GetAll");
+                var response = await client.GetAsync($"https://localhost:5014/api/Book/GetAll/{userEmail}");
                 if(!response.IsSuccessStatusCode) return NotFound();
                 var booksJson = await response.Content.ReadAsStringAsync();
 
@@ -76,8 +79,15 @@ public class IndexModel : PageModel
         {
             return StatusCode(500, "İstek işlenirken bir hata oluştu.");
         } 
-    }
 
+    }
+    private string GetEmailFromToken(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+        return jwtToken.Claims.First(claim => claim.Type == "email").Value;
+    }
+    
     public async Task<IActionResult> OnDeleteAsync(int id)
     {
         if (!ModelState.IsValid || id == null){

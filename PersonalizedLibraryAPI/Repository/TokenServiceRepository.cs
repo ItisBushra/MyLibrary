@@ -54,7 +54,6 @@ namespace PersonalizedLibraryAPI.Repository
                 ValidAudience = _configuration["JWT:Audience"],
                 IssuerSigningKey = _key
             };
-
             try
             {
                 // Validate the token
@@ -63,7 +62,7 @@ namespace PersonalizedLibraryAPI.Repository
             }
             catch (SecurityTokenException ex)
             {
-                throw new Exception($"{ex.Message}");
+                throw new Exception($"Token süresi doldu: {ex.Message}");
             }
         }
     }

@@ -9,8 +9,9 @@ using PersonalizedLibraryAPI.Models;
 var builder = WebApplication.CreateBuilder(args);
 //Adding identity
 builder.Services.AddIdentity<AppUser, IdentityRole>()
-    .AddEntityFrameworkStores<DBContext>();
-
+    .AddEntityFrameworkStores<DBContext>()
+    .AddDefaultTokenProviders();
+        
 // Add services to the container.
 builder.Services.AddRazorPages();
 
@@ -37,7 +38,9 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapRazorPages();
-
+app.UseAuthentication();
+app.UseDeveloperExceptionPage();
+app.MapControllers();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapRazorPages();

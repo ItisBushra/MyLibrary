@@ -21,6 +21,7 @@ namespace PersonalizedLibraryAPI.Data
         public DbSet<ReadingTracking> ReadingTrackings { get; set; }        
         public DbSet<Book> Books { get; set; }
         public DbSet<Status> Statuses { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
         public DbSet<BookCategory> BookCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -47,6 +48,12 @@ namespace PersonalizedLibraryAPI.Data
                 .HasOne(b => b.Status)
                 .WithMany(s => s.Books)
                 .HasForeignKey(b => b.StatusId);
+
+            //One-to-Many
+            modelBuilder.Entity<Book>()
+                .HasOne(b => b.AppUser)
+                .WithMany(s => s.Books)
+                .HasForeignKey(b => b.AppUserId);
 
 
             //identity role seeding

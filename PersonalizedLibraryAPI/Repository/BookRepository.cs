@@ -32,11 +32,18 @@ namespace PersonalizedLibraryAPI.Repository
             return _dBContext.Books
                     .Where(b=>b.Name == name).FirstOrDefault();
         }
-        public ICollection<Book> GetBooks()
+        public ICollection<Book> GetBooks(string userEmail = null)
         {
-            return _dBContext.Books.Include(s=>s.Status)
-                    .Include(r=>r.Review).Include(re=>re.ReadingTracking)
-                    .Include(c=>c.BookCategories).ThenInclude(bc => bc.Category).OrderBy(b=>b.Id).ToList();
+            IQueryable<Book> books = _dBContext.Books.Include(s=>s.Status)
+                    .Include(r=>r.Review)
+                    .Include(re=>re.ReadingTracking)
+                    .Include(c=>c.BookCategories).ThenInclude(bc => bc.Category);
+
+            if (!string.IsNullOrEmpty(userEmail))
+            {
+                books = books.Where(b => b.AppUser.Email == userEmail);
+            }
+            return books.OrderBy(b=>b.Id).ToList();
         }
         public bool CreateBook(List<int> categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review)

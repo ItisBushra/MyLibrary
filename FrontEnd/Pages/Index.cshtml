@@ -11,7 +11,7 @@
         <div class="row">
             <h1 class="log-text">
                 <strong>
-                Personalized Library'ye hoş geldiniz! <br> Kitaplarınızı görmek için lütfen <a class="nav-link" asp-page="/Login">giriş yapın.</a>
+                kendi kitapliğiniza hoş geldiniz!<br>Kitaplarınızı görmek için lütfen <a class="nav-link" asp-page="/Login">giriş yapın.</a>
                 Hesabınız yoksa, kendi kişisel kütüphanenizi oluşturmak için <a class="nav-link" asp-page="/Register">kaydolun.</a>
                 </strong>
             </h1>
@@ -35,17 +35,18 @@
     }
     </div>
 
-            <div class="createNav">
-                <a asp-page="/Create"><i class="bi bi-plus-circle"></i></a>
-            </div>
+    <div class="createNav">
+       <a asp-page="/Create"><i class="bi bi-plus-circle"></i></a>
+      </div>
             <div class="row card-container">
+            
                 @foreach(var book in Model.Books)
                 {
                     <div class="col-md-4 mb-3">
                         <div class="card text-dark">
                             <div class="card-header">
                                 <div class="header-content">
-                        <input hidden asp-for="@book.Book.Id">
+                                    <input hidden asp-for="@book.Book.Id">
                                     <h1>@book.Book.Name</h1> 
                                     <div class="icon-group">
                                     <a href="javascript:void(0)" onclick="deleteBook(@book.Book.Id)">

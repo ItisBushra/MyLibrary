@@ -17,7 +17,7 @@ namespace PersonalizedLibraryAPI.Repository
         {
             _dBContext = dBContext;
         }
-        public ICollection<Status> GetStatuses()//
+        public ICollection<Status> GetStatuses()
         {
             return _dBContext.Statuses.ToList();
         }
@@ -25,7 +25,7 @@ namespace PersonalizedLibraryAPI.Repository
         {
             return _dBContext.Statuses.Where(s=>s.Id == id).FirstOrDefault();
         }
-        public Status GetStatusByBook(int bookId) //
+        public Status GetStatusByBook(int bookId)
         {
             return _dBContext.Books.Where(b=>b.Id == bookId).Select(s=>s.Status).FirstOrDefault();
         }
@@ -33,7 +33,7 @@ namespace PersonalizedLibraryAPI.Repository
         {
             return _dBContext.Books.Where(s=>s.Status.Id == statusId).ToList();
         }
-        public bool StatusExists(int id)//
+        public bool StatusExists(int id)
         {
             return _dBContext.Statuses.Any(s=>s.Id == id);
         }

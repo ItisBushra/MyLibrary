@@ -39,7 +39,6 @@ namespace FrontEnd.Pages.Shared
             var client = _clientFactory.CreateClient();
             var loginJson = JsonConvert.SerializeObject(LoginDto);
             var content = new StringContent(loginJson, Encoding.UTF8, "application/json");
-
             try
             {
                 var loginUri = await client.PostAsync
@@ -62,7 +61,6 @@ namespace FrontEnd.Pages.Shared
                             SameSite = SameSiteMode.Strict,
                             Expires = DateTimeOffset.UtcNow.AddDays(7)
                         });
-
                         return RedirectToPage("Index");
                     }
                 }  

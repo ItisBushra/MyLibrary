@@ -36,7 +36,6 @@ namespace FrontEnd.Pages
             var client = _clientFactory.CreateClient();
             var registerJson = JsonConvert.SerializeObject(RegisterDto);
             var content = new StringContent(registerJson, Encoding.UTF8, "application/json");
-
             try
             {
                 var registerUri = await client.PostAsync

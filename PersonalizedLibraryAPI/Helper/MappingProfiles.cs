@@ -25,6 +25,7 @@ namespace PersonalizedLibraryAPI.Helper
             .ForMember(dest => dest.ReadingTracking, opt => opt.MapFrom(src => src.ReadingTracking))
             .ForMember(dest => dest.BookCategories, opt => opt.MapFrom(src => src.BookCategories))
             .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
+            .ForMember(dest => dest.NewUser, opt => opt.MapFrom(src => src.AppUser))
             .ReverseMap();
 
             CreateMap<BookCategory, CategoryDto>()
@@ -32,6 +33,8 @@ namespace PersonalizedLibraryAPI.Helper
             .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<AppUser, RegisterDto>().ReverseMap();
+            CreateMap<AppUser, NewUserDto>().ReverseMap();
+            CreateMap<AppUser, LoginDto>().ReverseMap();
         }
     }
 }

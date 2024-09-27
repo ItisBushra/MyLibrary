@@ -8,6 +8,6 @@ namespace PersonalizedLibraryAPI.Models
 {
     public class AppUser : IdentityUser
     {
-        
+        public ICollection<Book>? Books { get; set; }
     }
 }

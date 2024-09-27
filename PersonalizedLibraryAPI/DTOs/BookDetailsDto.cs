@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using PersonalizedLibraryAPI.DTOs.Account;
 
 namespace PersonalizedLibraryAPI.DTOs
 {
@@ -12,5 +13,6 @@ namespace PersonalizedLibraryAPI.DTOs
         public ReadingTrackingDto ReadingTracking { get; set; }
         public List<CategoryDto> BookCategories { get; set; }
         public StatusDto Status { get; set; }
+        public NewUserDto NewUser { get; set; }
     }
 }

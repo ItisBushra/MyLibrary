@@ -23,7 +23,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 12;
-}).AddEntityFrameworkStores<DBContext>();
+}).AddEntityFrameworkStores<DBContext>().AddDefaultTokenProviders();
 
 //adding scheme
 builder.Services.AddAuthentication(options =>
@@ -56,6 +56,7 @@ builder.Services.AddScoped<IStatusRepository, StatusRepository>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IReadingTrackingRepository, ReadingTrackingRepository>();
 builder.Services.AddScoped<ITokenServiceRepository, TokenServiceRepository>();
+builder.Services.AddScoped<IAppUserRepository, AppUserRepository>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();

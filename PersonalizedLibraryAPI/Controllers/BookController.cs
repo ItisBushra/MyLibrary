@@ -26,7 +26,7 @@ namespace PersonalizedLibraryAPI.Controllers
             _bookRepository = bookRepository;
         }
 
-        [HttpGet]
+        [HttpGet("GetAll")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Book>))]
         public IActionResult GetBooks()
         {
@@ -38,11 +38,11 @@ namespace PersonalizedLibraryAPI.Controllers
             return Ok(books);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("GetAll/{userEmail}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Book>))]
-        public IActionResult GetBooksDetailed()
+        public IActionResult GetBooksDetailed(string userEmail)
         {
-            var books = _bookRepository.GetBooks();
+            var books = _bookRepository.GetBooks(userEmail);
             var bookDetailsDtos = _mapper.Map<List<BookDetailsDto>>(books);
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
