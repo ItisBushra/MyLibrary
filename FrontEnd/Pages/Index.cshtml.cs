@@ -10,27 +10,34 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration; 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.DTOs.Account;
 using PersonalizedLibraryAPI.DTOs;
+using PersonalizedLibraryAPI.Data;
 namespace FrontEnd.Pages;
 
-public class IndexModel : PageModel
+public class IndexModel : SharedBasePage
 {
     private readonly IConfiguration _configuration;
     private readonly IHttpClientFactory  _clientFactory;
+    private readonly UserManager<AppUser> _userManager;
     [BindProperty]
     public LoginDto LoginDto { get; set; }
     public List<BookDetailsDto> Books { get; set; } = new List<BookDetailsDto>();
     public List<SelectListItem> StatusOptions { get; set; } = new List<SelectListItem>();
     public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
     public bool IsAuthenticated { get; set; }
-    public IndexModel(IHttpClientFactory  clientFactory,
-                        IConfiguration configuration)
+    public string appUserId { get; set; }
+    public IndexModel(IHttpClientFactory clientFactory,
+                      IConfiguration configuration, 
+                      UserManager<AppUser> userManager)
+        : base(userManager)
     {
         _clientFactory = clientFactory;
+        _userManager = userManager;
         _configuration = configuration;
     }
 
@@ -48,10 +55,9 @@ public class IndexModel : PageModel
             {
                 IsAuthenticated = true;
                 TempData["SuccessMessage"] = "Girişiniz başarılı oldu!";
-
-                var userEmail = GetEmailFromToken(token);
+                appUserId = await GetUserIdFromTokenAsync(token);
                 
-                var response = await client.GetAsync($"https://localhost:5014/api/Book/GetAll/{userEmail}");
+                var response = await client.GetAsync($"https://localhost:5014/api/Book/GetAll/{appUserId}");
                 if(!response.IsSuccessStatusCode) return NotFound();
                 var booksJson = await response.Content.ReadAsStringAsync();
 
@@ -81,13 +87,6 @@ public class IndexModel : PageModel
         } 
 
     }
-    private string GetEmailFromToken(string token)
-    {
-        var handler = new JwtSecurityTokenHandler();
-        var jwtToken = handler.ReadJwtToken(token);
-        return jwtToken.Claims.First(claim => claim.Type == "email").Value;
-    }
-    
     public async Task<IActionResult> OnDeleteAsync(int id)
     {
         if (!ModelState.IsValid || id == null){

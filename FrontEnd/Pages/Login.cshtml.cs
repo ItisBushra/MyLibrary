@@ -17,7 +17,6 @@ namespace FrontEnd.Pages.Shared
 {
     public class Login : PageModel
     {
-        
         private readonly IHttpClientFactory _clientFactory;
         [BindProperty]
         public LoginDto LoginDto { get; set; }

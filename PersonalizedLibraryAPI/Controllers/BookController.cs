@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging; 
 using PersonalizedLibraryAPI.DTOs;
@@ -38,11 +37,11 @@ namespace PersonalizedLibraryAPI.Controllers
             return Ok(books);
         }
 
-        [HttpGet("GetAll/{userEmail}")]
+        [HttpGet("GetAll/{id}")]
         [ProducesResponseType(200, Type = typeof(IEnumerable<Book>))]
-        public IActionResult GetBooksDetailed(string userEmail)
+        public IActionResult GetBooksDetailed(string id)
         {
-            var books = _bookRepository.GetBooks(userEmail);
+            var books = _bookRepository.GetBooks(id);
             var bookDetailsDtos = _mapper.Map<List<BookDetailsDto>>(books);
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -71,7 +70,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult CreateBook([FromQuery] int statusId, [FromQuery] List<int> catId, 
                                         [FromBody] BookDto bookCreate, [FromQuery] ReadingTrackingDto?
-                                         readingTracking, [FromQuery] ReviewDto? review)
+                                         readingTracking, [FromQuery] ReviewDto? review, [FromQuery] string userId)
         {
             if (bookCreate == null|| !ModelState.IsValid) 
                 return BadRequest(ModelState);
@@ -89,7 +88,7 @@ namespace PersonalizedLibraryAPI.Controllers
             var reviewMap = _mapper.Map<Review>(review);
 
             if (!_bookRepository.CreateBook(catId, statusId, bookMap,
-                         readingTrackingMap, reviewMap))
+                         readingTrackingMap, reviewMap, userId))
             {
                 ModelState.AddModelError("", "bir şeyler ters gitti");
                 return StatusCode(500, ModelState);
@@ -103,7 +102,7 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
         public IActionResult UpdateBook([FromQuery] List<int> catId, [FromQuery] int statusId, int bookId, [FromBody] BookDto updateBook,[FromQuery] ReadingTrackingDto?
-                                         readingTracking, [FromQuery] ReviewDto? review)
+                                         readingTracking, [FromQuery] ReviewDto? review, [FromQuery] string userId)
         {
             if(updateBook == null || bookId != updateBook.Id)
                 return BadRequest(ModelState);
@@ -117,7 +116,7 @@ namespace PersonalizedLibraryAPI.Controllers
             var bookMap = _mapper.Map<Book>(updateBook);
             var readingTrackingMap = _mapper.Map<ReadingTracking>(readingTracking);
             var reviewMap = _mapper.Map<Review>(review);
-            if(!_bookRepository.UpdateBook(catId, statusId, bookMap, readingTrackingMap, reviewMap))
+            if(!_bookRepository.UpdateBook(catId, statusId, bookMap, readingTrackingMap, reviewMap, userId))
             {
                 ModelState.AddModelError("", "bir şeyler ters gitti");
                 return StatusCode(500, ModelState);

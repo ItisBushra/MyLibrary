@@ -36,10 +36,10 @@
     </div>
 
     <div class="createNav">
-       <a asp-page="/Create"><i class="bi bi-plus-circle"></i></a>
+       <a asp-page="/Create" asp-route-userId="@Model.appUserId"><i class="bi bi-plus-circle"></i></a>
       </div>
             <div class="row card-container">
-            
+                <input hidden asp-for="@Model.appUserId">
                 @foreach(var book in Model.Books)
                 {
                     <div class="col-md-4 mb-3">

@@ -11,12 +11,16 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.DTOs;
+using PersonalizedLibraryAPI.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FrontEnd.Pages
 {
-    public class Create : PageModel
+    public class Create : SharedBasePage
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly UserManager<AppUser> _userManager;
         [BindProperty]
         public BookDto BookDto { get; set; }
         [BindProperty]
@@ -31,37 +35,54 @@ namespace FrontEnd.Pages
         public List<SelectListItem> CategoryOptions { get; set; } = new List<SelectListItem>();
         [BindProperty]
         public List<int> SelectedCategories { get; set; } = new List<int>();
-        public Create(IHttpClientFactory clientFactory)
+        public bool IsAuthenticated { get; set; }
+        [BindProperty]
+        public string UserId { get; set; }
+
+        public Create(IHttpClientFactory clientFactory, UserManager<AppUser> userManager)
+        : base(userManager)
         {
             _clientFactory = clientFactory;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnGetAsync()
-        {
-            // API'den durumları getirin
-            var client = _clientFactory.CreateClient();
-            var response1 = await client.GetStringAsync("https://localhost:5014/api/Status");
-            var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(response1);
-
-            //kategorileri getirme
-            var response2 = await client.GetStringAsync("https://localhost:5014/api/Category");
-            var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response2);
-
-            // StatusOptions'ı Doldur
-            StatusOptions = statuses.Select(s => new SelectListItem
+        { 
+            var token = Request.Cookies["AuthToken"];
+            if (string.IsNullOrEmpty(token))
             {
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList();
-
-            // CategoryOptions'ı Doldur 
-            CategoryOptions = categories.Select(s => new SelectListItem
+                Response.Cookies.Delete("AuthToken");
+                IsAuthenticated = false;
+                return Page();
+            }
+            else
             {
-                Value = s.Id.ToString(),
-                Text = s.Name
-            }).ToList();
+                UserId = await GetUserIdFromTokenAsync(token);
+                // API'den durumları getirin
+                var client = _clientFactory.CreateClient();
+                var response1 = await client.GetStringAsync("https://localhost:5014/api/Status");
+                var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(response1);
 
-            return Page();
+                //kategorileri getirme
+                var response2 = await client.GetStringAsync("https://localhost:5014/api/Category");
+                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(response2);
+
+                // StatusOptions'ı Doldur
+                StatusOptions = statuses.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(), 
+                    Text = s.Name
+                }).ToList();
+
+                // CategoryOptions'ı Doldur 
+                CategoryOptions = categories.Select(s => new SelectListItem
+                {
+                    Value = s.Id.ToString(),
+                    Text = s.Name
+                }).ToList();
+
+                return Page();
+            }
         }
         public async Task<IActionResult> OnPostAsync()
         {
@@ -69,7 +90,9 @@ namespace FrontEnd.Pages
                 await OnGetAsync();
                 return Page();
             }
-             var client = _clientFactory.CreateClient();
+            var token = Request.Cookies["AuthToken"];
+            UserId = await GetUserIdFromTokenAsync(token);
+            var client = _clientFactory.CreateClient();
             
             // bookDto'yu JSON'a serileştirme
             var bookJson =  JsonConvert.SerializeObject(BookDto);
@@ -80,7 +103,7 @@ namespace FrontEnd.Pages
             // İstek URI'sini oluşturun
             var requestUri = $"https://localhost:5014/api/Book?statusId={statusId}"+$"{categoryids}"+
             $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate
-            :MM-dd-yyyy}"+$"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
+            :MM-dd-yyyy}"+$"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}&userId={UserId}";
             try{
                 // İstek gönderin
                 var response = await client.PostAsync(requestUri, content);

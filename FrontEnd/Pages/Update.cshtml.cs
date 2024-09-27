@@ -11,12 +11,16 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.DTOs;
+using Microsoft.AspNetCore.Identity;
+using PersonalizedLibraryAPI.Data;
 
 namespace FrontEnd.Pages
 {
-    public class Update : PageModel
+    public class Update : SharedBasePage
     {
         private readonly IHttpClientFactory _clientFactory;
+        private readonly UserManager<AppUser> _userManager;
+
         [BindProperty]
         public BookDto BookDto { get; set; }
         [BindProperty]
@@ -30,109 +34,125 @@ namespace FrontEnd.Pages
         public List<int> selectedCategoryIds { get; set; }
         [BindProperty]
         public List<int> SelectedCategories { get; set; } = new List<int>();
+        public bool IsAuthenticated { get; set; }
+        [BindProperty]
+        public string UserId { get; set; }
 
-        public Update(IHttpClientFactory clientFactory)
+        public Update(IHttpClientFactory clientFactory, UserManager<AppUser> userManager)
+        : base(userManager)
         {
             _clientFactory = clientFactory;
+            _userManager = userManager;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null) return NotFound();
             var client = _clientFactory.CreateClient();
-
-            try{
-                //Book getirme
-                var bookResponse = await client.GetAsync($"https://localhost:5014/api/Book/{id}");
-                if (!bookResponse.IsSuccessStatusCode) return NotFound();
-                    
-                var book = await bookResponse.Content.ReadFromJsonAsync<Book>();
-                if (book == null) return NotFound();
-
-                // BookDto doldur
-                BookDto = new BookDto
-                {
-                    Id = book.Id,
-                    Name = book.Name,
-                    WritersName = book.WritersName
-                };
-
-                // ReadingTracking getirme
-                var readingTrackingResponse = await client.GetAsync
-                        ($"https://localhost:5014/api/ReadingTracking/readingTracking/{id}");
-
-                if (!readingTrackingResponse.IsSuccessStatusCode) return NotFound();
-                if(readingTrackingResponse.ReasonPhrase == "No Content") 
-                    ReadingTrackingDto = new ReadingTrackingDto();
-                else
-                {
-                    var readingTracking = await readingTrackingResponse.Content.ReadFromJsonAsync<ReadingTracking>();
-                    if(readingTracking == null) return NotFound();
-
-                    ReadingTrackingDto = new ReadingTrackingDto
-                    {
-                        Id = readingTracking.Id,
-                        StartDate = readingTracking.StartDate,
-                        EndDate = readingTracking.EndDate
-                    };
-                }
-
-                //Review getirme
-                var reviewResponse = await client.GetAsync
-                                    ($"https://localhost:5014/api/Review/review/{id}");
-
-                if (!reviewResponse.IsSuccessStatusCode) return NotFound();
-                if(reviewResponse.ReasonPhrase == "No Content")  ReviewDto = new ReviewDto();
-                else
-                {
-                    var review = await reviewResponse.Content.ReadFromJsonAsync<Review>();
-                    if(review == null) return NotFound();
-                    ReviewDto = new ReviewDto
-                    {
-                        Id = review.Id,
-                        Text = review.Text,
-                        Title = review.Title,
-                        Liked = review.Liked
-                    };                  
-                }
-
-                // tüm durumler getirme
-                var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
-                var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
-                
-                var selectedStatusResponse = await client.GetStringAsync($"https://localhost:5014/books/{id}");
-                var selectedStatusId = JsonConvert.DeserializeObject<StatusDto>(selectedStatusResponse);
-
-                 // StatusOptions'ı doldurme
-                StatusOptions = statuses?.Select(s => new SelectListItem
-                {
-                    Value = s.Id.ToString(),
-                    Text = s.Name
-                }).ToList() ?? new List<SelectListItem>();
-
-                // tüm kategoriler getirme
-                var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
-                var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
-
-                var selectedCategoryResponse = await client.GetStringAsync($"https://localhost:5014/api/Category/category/{id}");
-                var selectedCategories = JsonConvert.DeserializeObject<List<CategoryDto>>(selectedCategoryResponse);
-
-                SelectedCategories = selectedCategories.Select(c => c.Id).ToList();
-                // CategoryOptions'ı doldurme
-                CategoryOptions = categories?.Select(c => new SelectListItem
-                {
-                    Value = c.Id.ToString(), 
-                    Text = c.Name,
-                    Selected = SelectedCategories.Contains(c.Id)
-                }).ToList() ?? new List<SelectListItem>();
-
-                // Mevcut durumu ayarlama
-                statusId = selectedStatusId.Id;
-
-                return Page();
+            
+            var token = Request.Cookies["AuthToken"];
+            if (string.IsNullOrEmpty(token))
+            {
+                Response.Cookies.Delete("AuthToken");
+                IsAuthenticated = false;
+                return RedirectToPage("Login");
             }
-            catch (Exception ex){// İstisna durumunu kaydet
-                   return StatusCode(500, "İstek işlenirken bir hata oluştu.");
+            else
+            {
+                try{
+                    //Book getirme
+                    var bookResponse = await client.GetAsync($"https://localhost:5014/api/Book/{id}");
+                    if (!bookResponse.IsSuccessStatusCode) return NotFound();
+                    UserId = await GetUserIdFromTokenAsync(token);
+
+                    var book = await bookResponse.Content.ReadFromJsonAsync<Book>();
+                    if (book == null) return NotFound();
+
+                    // BookDto doldur
+                    BookDto = new BookDto
+                    {
+                        Id = book.Id,
+                        Name = book.Name,
+                        WritersName = book.WritersName
+                    };
+
+                    // ReadingTracking getirme
+                    var readingTrackingResponse = await client.GetAsync
+                            ($"https://localhost:5014/api/ReadingTracking/readingTracking/{id}");
+
+                    if (!readingTrackingResponse.IsSuccessStatusCode) return NotFound();
+                    if(readingTrackingResponse.ReasonPhrase == "No Content") 
+                        ReadingTrackingDto = new ReadingTrackingDto();
+                    else
+                    {
+                        var readingTracking = await readingTrackingResponse.Content.ReadFromJsonAsync<ReadingTracking>();
+                        if(readingTracking == null) return NotFound();
+
+                        ReadingTrackingDto = new ReadingTrackingDto
+                        {
+                            Id = readingTracking.Id,
+                            StartDate = readingTracking.StartDate,
+                            EndDate = readingTracking.EndDate
+                        };
+                    }
+
+                    //Review getirme
+                    var reviewResponse = await client.GetAsync
+                                        ($"https://localhost:5014/api/Review/review/{id}");
+
+                    if (!reviewResponse.IsSuccessStatusCode) return NotFound();
+                    if(reviewResponse.ReasonPhrase == "No Content")  ReviewDto = new ReviewDto();
+                    else
+                    {
+                        var review = await reviewResponse.Content.ReadFromJsonAsync<Review>();
+                        if(review == null) return NotFound();
+                        ReviewDto = new ReviewDto
+                        {
+                            Id = review.Id,
+                            Text = review.Text,
+                            Title = review.Title,
+                            Liked = review.Liked
+                        };                  
+                    }
+
+                    // tüm durumler getirme
+                    var statusResponse = await client.GetStringAsync("https://localhost:5014/api/Status");
+                    var statuses = JsonConvert.DeserializeObject<List<StatusDto>>(statusResponse);
+                    
+                    var selectedStatusResponse = await client.GetStringAsync($"https://localhost:5014/books/{id}");
+                    var selectedStatusId = JsonConvert.DeserializeObject<StatusDto>(selectedStatusResponse);
+
+                    // StatusOptions'ı doldurme
+                    StatusOptions = statuses?.Select(s => new SelectListItem
+                    {
+                        Value = s.Id.ToString(),
+                        Text = s.Name
+                    }).ToList() ?? new List<SelectListItem>();
+
+                    // tüm kategoriler getirme
+                    var categoryResponse = await client.GetStringAsync("https://localhost:5014/api/Category");
+                    var categories = JsonConvert.DeserializeObject<List<CategoryDto>>(categoryResponse);
+
+                    var selectedCategoryResponse = await client.GetStringAsync($"https://localhost:5014/api/Category/category/{id}");
+                    var selectedCategories = JsonConvert.DeserializeObject<List<CategoryDto>>(selectedCategoryResponse);
+
+                    SelectedCategories = selectedCategories.Select(c => c.Id).ToList();
+                    // CategoryOptions'ı doldurme
+                    CategoryOptions = categories?.Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(), 
+                        Text = c.Name,
+                        Selected = SelectedCategories.Contains(c.Id)
+                    }).ToList() ?? new List<SelectListItem>();
+
+                    // Mevcut durumu ayarlama
+                    statusId = selectedStatusId.Id;
+
+                    return Page();
+                }
+                catch (Exception ex){// İstisna durumunu kaydet
+                    return StatusCode(500, "İstek işlenirken bir hata oluştu.");
+                }
             }
         }
 
@@ -143,7 +163,8 @@ namespace FrontEnd.Pages
                 return Page();
             }
             var client = _clientFactory.CreateClient();
-        
+            var token = Request.Cookies["AuthToken"];
+            UserId = await GetUserIdFromTokenAsync(token);
             // BookDto'yu JSON'a serileştirme
             var bookJson =  JsonConvert.SerializeObject(BookDto);
             var content = new StringContent(bookJson, Encoding.UTF8, "application/json");
@@ -152,7 +173,7 @@ namespace FrontEnd.Pages
             // İstek URI'sini oluşturme
             var requestUri = $"https://localhost:5014/api/Book/{id}?statusId={statusId}" + $"{categoryids}" +
                                 $"&StartDate={ReadingTrackingDto.StartDate:MM-dd-yyyy}&EndDate={ReadingTrackingDto.EndDate:MM-dd-yyyy}" +
-                                $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}";
+                                $"&Title={ReviewDto.Title}&Text={ReviewDto.Text}&Liked={ReviewDto.Liked}&userId={UserId}";;
             try{// İstek gönderme
                 var response = await client.PutAsync(requestUri, content);
 

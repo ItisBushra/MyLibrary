@@ -32,21 +32,22 @@ namespace PersonalizedLibraryAPI.Repository
             return _dBContext.Books
                     .Where(b=>b.Name == name).FirstOrDefault();
         }
-        public ICollection<Book> GetBooks(string userEmail = null)
+        public ICollection<Book> GetBooks(string id = null)
         {
             IQueryable<Book> books = _dBContext.Books.Include(s=>s.Status)
+                    
                     .Include(r=>r.Review)
                     .Include(re=>re.ReadingTracking)
                     .Include(c=>c.BookCategories).ThenInclude(bc => bc.Category);
 
-            if (!string.IsNullOrEmpty(userEmail))
+            if (!string.IsNullOrEmpty(id))
             {
-                books = books.Where(b => b.AppUser.Email == userEmail);
+                books = books.Include(u=>u.AppUser).Where(b => b.AppUser.Id == id);
             }
             return books.OrderBy(b=>b.Id).ToList();
         }
         public bool CreateBook(List<int> categoryId, int statusId, Book book,
-                         ReadingTracking? readingTracking, Review? review)
+                         ReadingTracking? readingTracking, Review? review, string userId)
         {
             //kategoriyi getirme
             var BookCategoryObj = _dBContext.Categories.Where(c => categoryId.Contains(c.Id)).ToList();
@@ -60,6 +61,9 @@ namespace PersonalizedLibraryAPI.Repository
             //status getirme
             var BookStatus = _dBContext.Statuses.Where(s=>s.Id == statusId).FirstOrDefault();
             book.StatusId = BookStatus.Id;
+
+            var BookUser = _dBContext.AppUsers.Where(s=>s.Id == userId).FirstOrDefault();
+            book.AppUserId = BookUser.Id;
 
             //eğer rivew null değilse
             if(review !=null)
@@ -78,7 +82,8 @@ namespace PersonalizedLibraryAPI.Repository
             return Save();
         }
 
-        public bool UpdateBook(List<int> categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review)
+        public bool UpdateBook(List<int> categoryId, int statusId, Book book, ReadingTracking? readingTracking, Review? review
+        , string userId)
         {
             var existingBook = _dBContext.Books
                             .Include(b => b.BookCategories)
@@ -86,7 +91,8 @@ namespace PersonalizedLibraryAPI.Repository
                             .Include(b => b.ReadingTracking)
                             .Include(b => b.Review)
                             .Include(b=>b.ReadingTracking)
-                            .Include(b=>b.Review)
+                            .Include(b=>b.Status)//edit this in previouse pics
+                            .Include(b=>b.AppUser)
                             .FirstOrDefault(b => b.Id == book.Id);
 
             if (existingBook == null)
@@ -96,6 +102,7 @@ namespace PersonalizedLibraryAPI.Repository
             existingBook.Name = book.Name;
             existingBook.WritersName = book.WritersName;
             existingBook.StatusId = statusId;
+            existingBook.AppUserId = userId;
 
             var existingBookCategory = existingBook.BookCategories.ToList();
             foreach(var category in existingBookCategory)
