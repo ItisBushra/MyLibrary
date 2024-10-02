@@ -19,7 +19,8 @@ namespace PersonalizedLibraryAPI.Controllers
         private readonly IReadingTrackingRepository _readingTrackingRepository;
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
-        public ReadingTrackingController(IReadingTrackingRepository readingTrackingRepository, IMapper mapper, IBookRepository bookRepository)
+        public ReadingTrackingController(IReadingTrackingRepository readingTrackingRepository,
+         IMapper mapper, IBookRepository bookRepository)
         {
             _readingTrackingRepository = readingTrackingRepository;
             _bookRepository = bookRepository;
@@ -30,7 +31,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<ReadingTracking>))]
         public IActionResult ReadingTrackings()
         {
-            var readingTrackings = _mapper.Map<List<ReadingTrackingDto>>(_readingTrackingRepository.GetReadingTrackings());
+            var readingTrackings = _mapper.Map<List<ReadingTrackingDto>>
+            (_readingTrackingRepository.GetReadingTrackings());
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -47,7 +49,7 @@ namespace PersonalizedLibraryAPI.Controllers
                 return NotFound();
 
             var readingTracking = _mapper.Map<ReadingTrackingDto>
-                                    (_readingTrackingRepository.GetReadingTracking(readingTrackingId));
+            (_readingTrackingRepository.GetReadingTracking(readingTrackingId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -60,7 +62,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetBookByReadingTrackingId(int readingTrackingId)
         { 
-            var book = _mapper.Map<BookDto>(_readingTrackingRepository.GetBookByReadingTracking(readingTrackingId));
+            var book = _mapper.Map<BookDto>
+            (_readingTrackingRepository.GetBookByReadingTracking(readingTrackingId));
 
             //validation
             if(!ModelState.IsValid)
@@ -74,7 +77,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetReadingTrackingByBookId(int bookId)
         {
-            var readingTracking = _mapper.Map<ReadingTrackingDto>(_readingTrackingRepository.GetReadingTrackingByBook(bookId));
+            var readingTracking = _mapper.Map<ReadingTrackingDto>
+            (_readingTrackingRepository.GetReadingTrackingByBook(bookId));
 
             if(!ModelState.IsValid)
                return BadRequest();
@@ -120,7 +124,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(204)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateReadingTracking([FromQuery] int bookId, int readingTrackingId, [FromBody] ReadingTrackingDto updateReadingTracking)
+        public IActionResult UpdateReadingTracking([FromQuery] int bookId, int readingTrackingId
+        , [FromBody] ReadingTrackingDto updateReadingTracking)
         {
             if(updateReadingTracking == null || readingTrackingId != updateReadingTracking.Id)
                 return BadRequest(ModelState);

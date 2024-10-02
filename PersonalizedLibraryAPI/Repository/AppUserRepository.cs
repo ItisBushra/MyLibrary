@@ -20,21 +20,22 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public bool AppUserExists(string id)
         {
-           return _dBContext.AppUsers.Any(s=>s.Id == id);
+           return _dBContext.AppUsers
+                    .Any(s=>s.Id == id);
         }
-
         public AppUser GetAppUser(string id)
         {
-             return _dBContext.AppUsers.Where(s=>s.Id == id)
+             return _dBContext.AppUsers
+             .Where(s=>s.Id == id)
              .FirstOrDefault();
         }
-
         public AppUser GetAppUserByBook(int bookId)
         {
-             return _dBContext.Books.Where(b=>b.Id == bookId)
-             .Select(s=>s.AppUser).FirstOrDefault();
+             return _dBContext.Books
+             .Where(b=>b.Id == bookId)
+             .Select(s=>s.AppUser)
+             .FirstOrDefault();
         }
-
         public ICollection<AppUser> GetAppUsers()
         {
             return _dBContext.AppUsers.ToList();

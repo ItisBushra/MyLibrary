@@ -56,6 +56,7 @@ namespace FrontEnd.Pages
             }
             else
             {
+                IsAuthenticated = true;
                 UserId = await GetUserIdFromTokenAsync(token);
                 // API'den durumları getirin
                 var client = _clientFactory.CreateClient();

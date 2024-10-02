@@ -21,7 +21,8 @@ namespace PersonalizedLibraryAPI.Controllers
         private readonly IBookRepository _bookRepository;
         private readonly IMapper _mapper;
 
-        public ReviewController(IReviewRepository reviewRepository, IMapper mapper, IBookRepository bookRepository)
+        public ReviewController(IReviewRepository reviewRepository, 
+        IMapper mapper, IBookRepository bookRepository)
         {
             _reviewRepository = reviewRepository;
             _mapper = mapper;

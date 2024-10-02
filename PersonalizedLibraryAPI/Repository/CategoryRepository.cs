@@ -22,7 +22,6 @@ namespace PersonalizedLibraryAPI.Repository
 
         public ICollection<Book> GetBooksByCategory(int categoryId)
         {
-            //nestd entities / navigation properites
             return _dBContext.BookCategories.Where(c=> c.CategoryId == categoryId).Select(b=>b.Book).ToList();
         }
         public ICollection<Category> GetCategoriesByBook(int bookId)

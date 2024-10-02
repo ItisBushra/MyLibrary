@@ -49,6 +49,10 @@ namespace PersonalizedLibraryAPI.Repository
         public bool CreateBook(List<int> categoryId, int statusId, Book book,
                          ReadingTracking? readingTracking, Review? review, string userId)
         {
+            //kullanıcı getirme
+            var BookUser = _dBContext.AppUsers.Where(s=>s.Id == userId).FirstOrDefault();
+            book.AppUserId = BookUser.Id;
+
             //kategoriyi getirme
             var BookCategoryObj = _dBContext.Categories.Where(c => categoryId.Contains(c.Id)).ToList();
 
@@ -61,9 +65,6 @@ namespace PersonalizedLibraryAPI.Repository
             //status getirme
             var BookStatus = _dBContext.Statuses.Where(s=>s.Id == statusId).FirstOrDefault();
             book.StatusId = BookStatus.Id;
-
-            var BookUser = _dBContext.AppUsers.Where(s=>s.Id == userId).FirstOrDefault();
-            book.AppUserId = BookUser.Id;
 
             //eğer rivew null değilse
             if(review !=null)

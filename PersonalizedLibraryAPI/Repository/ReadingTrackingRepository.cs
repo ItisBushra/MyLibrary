@@ -18,26 +18,32 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public bool ReadingTrackingExists(int id)
         {
-            return _dBContext.ReadingTrackings.Any(r=>r.Id == id);
+            return _dBContext.ReadingTrackings
+            .Any(r=>r.Id == id);
         }
         public ICollection<ReadingTracking> GetReadingTrackings() 
         {
-            return _dBContext.ReadingTrackings.OrderBy(r=>r.Id).ToList();
+            return _dBContext.ReadingTrackings
+            .OrderBy(r=>r.Id).ToList();
         }
         public ReadingTracking GetReadingTracking(int id)
         {
             return _dBContext.ReadingTrackings
-                    .Where(r=>r.Id == id).FirstOrDefault();
+                    .Where(r=>r.Id == id)
+                    .FirstOrDefault();
         }
         public ReadingTracking GetReadingTrackingByBook(int bookId)
         {
-            return _dBContext.Books.Where(b=>b.Id == bookId)
-                    .Select(r=>r.ReadingTracking).FirstOrDefault();
+            return _dBContext.Books
+            .Where(b=>b.Id == bookId)
+            .Select(r=>r.ReadingTracking)
+            .FirstOrDefault();
         }
         public Book GetBookByReadingTracking(int readingTrackingId)
         {
-            return _dBContext.ReadingTrackings.Where(r=>r.Id == readingTrackingId)
-                    .Select(b=>b.Book).FirstOrDefault();
+            return _dBContext.ReadingTrackings
+            .Where(r=>r.Id == readingTrackingId)
+            .Select(b=>b.Book).FirstOrDefault();
         }
         public bool CreateReadingTracking(ReadingTracking readingTracking)
         {

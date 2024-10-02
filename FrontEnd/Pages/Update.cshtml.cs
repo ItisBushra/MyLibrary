@@ -59,6 +59,7 @@ namespace FrontEnd.Pages
             }
             else
             {
+                IsAuthenticated = true;
                 try{
                     //Book getirme
                     var bookResponse = await client.GetAsync($"https://localhost:5014/api/Book/{id}");

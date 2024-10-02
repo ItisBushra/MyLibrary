@@ -23,19 +23,23 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public Status GetStatus(int id)
         {
-            return _dBContext.Statuses.Where(s=>s.Id == id).FirstOrDefault();
+            return _dBContext.Statuses
+            .Where(s=>s.Id == id).FirstOrDefault();
         }
         public Status GetStatusByBook(int bookId)
         {
-            return _dBContext.Books.Where(b=>b.Id == bookId).Select(s=>s.Status).FirstOrDefault();
+            return _dBContext.Books.Where(b=>b.Id == bookId)
+            .Select(s=>s.Status).FirstOrDefault();
         }
         public ICollection<Book> GetBooksFromAStatus(int statusId)
         {
-            return _dBContext.Books.Where(s=>s.Status.Id == statusId).ToList();
+            return _dBContext.Books.
+            Where(s=>s.Status.Id == statusId).ToList();
         }
         public bool StatusExists(int id)
         {
-            return _dBContext.Statuses.Any(s=>s.Id == id);
+            return _dBContext.Statuses
+            .Any(s=>s.Id == id);
         }
     }
 }

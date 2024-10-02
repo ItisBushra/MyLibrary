@@ -29,7 +29,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Status>))]
         public IActionResult GetStatuses()
         {
-            var statuses = _mapper.Map<List<StatusDto>>(_statusRepository.GetStatuses());
+            var statuses = _mapper.Map<List<StatusDto>>
+            (_statusRepository.GetStatuses());
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -45,7 +46,8 @@ namespace PersonalizedLibraryAPI.Controllers
             if(!_statusRepository.StatusExists(statusId))
                 return NotFound();
 
-            var status = _mapper.Map<StatusDto>(_statusRepository.GetStatus(statusId));
+            var status = _mapper.Map<StatusDto>
+            (_statusRepository.GetStatus(statusId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -58,7 +60,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetStatusOfABook(int bookId)
         {
-            var status = _mapper.Map<StatusDto>(_statusRepository.GetStatusByBook(bookId));
+            var status = _mapper.Map<StatusDto>
+            (_statusRepository.GetStatusByBook(bookId));
 
             if(!ModelState.IsValid)
                return BadRequest();

@@ -26,15 +26,20 @@ namespace PersonalizedLibraryAPI.Repository
         }
         public Review GetReview(int id)
         {
-            return _dBContext.Reviews.Where(r=>r.Id == id).FirstOrDefault();
+            return _dBContext.Reviews
+            .Where(r=>r.Id == id).FirstOrDefault();
         }
         public Review GetReviewByBook(int bookId)
         {
-            return _dBContext.Books.Where(b=>b.Id == bookId).Select(r=>r.Review).FirstOrDefault();
+            return _dBContext.Books
+            .Where(b=>b.Id == bookId)
+            .Select(r=>r.Review).FirstOrDefault();
         }
         public Book GetBookByReview(int reviewId)
         {
-            return _dBContext.Reviews.Where(r=>r.Id == reviewId).Select(b=>b.Book).FirstOrDefault();
+            return _dBContext.Reviews
+            .Where(r=>r.Id == reviewId)
+            .Select(b=>b.Book).FirstOrDefault();
         }
         public bool CreateReview(Review review)
         {

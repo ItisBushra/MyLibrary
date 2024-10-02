@@ -37,7 +37,6 @@ namespace PersonalizedLibraryAPI.Controllers
 
             return Ok(userDto);
         }
-
         [HttpGet("{appUserId}")]
         [ProducesResponseType(200, Type = typeof(AppUser))]
         [ProducesResponseType(400)]
@@ -46,20 +45,21 @@ namespace PersonalizedLibraryAPI.Controllers
             if(!_appUserRepository.AppUserExists(appUserId))
                 return NotFound();
 
-            var user = _mapper.Map<LoginDto>(_appUserRepository.GetAppUser(appUserId));
+            var user = _mapper.Map<LoginDto>
+            (_appUserRepository.GetAppUser(appUserId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
 
             return Ok(user);
         }
-        
         [HttpGet("user/books/{bookId}")]
         [ProducesResponseType(200, Type = typeof(AppUser))]
         [ProducesResponseType(400)]
         public IActionResult GetUserOfABook(int bookId)
         {
-            var user = _mapper.Map<LoginDto>(_appUserRepository.GetAppUserByBook(bookId));
+            var user = _mapper.Map<LoginDto>
+            (_appUserRepository.GetAppUserByBook(bookId));
 
             if(!ModelState.IsValid)
                return BadRequest();

@@ -43,19 +43,14 @@ namespace PersonalizedLibraryAPI.Controllers
                 var createdUser = await _userManager.CreateAsync(appUser, registerDto.Password);
                 if(createdUser.Succeeded)
                 {
-                    var roleResult = await _userManager.AddToRoleAsync(appUser, "User");
-                    if(roleResult.Succeeded)
-                    {
-                        return Ok(
-                            new NewUserDto
-                            {
-                                UserName = appUser.UserName,
-                                Email = appUser.Email,
-                                Token = _tokenServiceRepository.CreateToken(appUser)
-                            }
-                        );
-                    }
-                    else return StatusCode(500, roleResult.Errors);
+                    return Ok(
+                        new NewUserDto
+                        {
+                            UserName = appUser.UserName,
+                            Email = appUser.Email,
+                            Token = _tokenServiceRepository.CreateToken(appUser)
+                        }
+                    );
                 }
                 else return StatusCode(500, createdUser.Errors); 
             }catch(Exception e)

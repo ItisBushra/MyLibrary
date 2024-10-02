@@ -11,7 +11,6 @@ using PersonalizedLibraryAPI.Models;
 using PersonalizedLibraryAPI.DTOs;
 using PersonalizedLibraryAPI.Repository.IRepository;
 
-
 namespace PersonalizedLibraryAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -31,7 +30,8 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(200, Type = typeof(IEnumerable<Category>))]
         public IActionResult GetCategories()
         {
-            var categories = _mapper.Map<List<CategoryDto>>(_categoryRepository.GetCategories());
+            var categories = _mapper.Map<List<CategoryDto>>
+            (_categoryRepository.GetCategories());
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -47,7 +47,8 @@ namespace PersonalizedLibraryAPI.Controllers
             if(!_categoryRepository.CategoryExists(categoryId))
                 return NotFound();
 
-            var category = _mapper.Map<CategoryDto>(_categoryRepository.GetCategory(categoryId));
+            var category = _mapper.Map<CategoryDto>
+            (_categoryRepository.GetCategory(categoryId));
 
             if(!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -60,9 +61,10 @@ namespace PersonalizedLibraryAPI.Controllers
         [ProducesResponseType(400)]
         public IActionResult GetBookByCategoryId(int categoryId)
         {
-            var books = _mapper.Map<List<BookDto>>(_categoryRepository.GetBooksByCategory(categoryId));
+            var books = _mapper.Map<List<BookDto>>
+            (_categoryRepository.GetBooksByCategory(categoryId));
 
-            //validation
+            //doğrulama
             if(!ModelState.IsValid)
                return BadRequest();
 
